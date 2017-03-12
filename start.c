@@ -19,8 +19,8 @@ void display_usage(){
 
 void freeArg(Arg *args){
 
-	free(args->search);
-	free(args->searchDico);
+	// free(args->search);
+	// free(args->searchDico);
 	free(args);
 }
 
@@ -39,12 +39,10 @@ void parseCommandLine(int argc, char *argv[], struct arg *args){
 				args->occ = (uint32_t)atoi(optarg);
 				break;
 			case 'd':
-				args->searchDico = (char *) malloc(strlen(optarg));
-				args->searchDico = optarg;
+				args->searchDico = strdup(optarg);
 				break;
 			case 'r':
-				args->search = (char *) malloc(strlen(optarg));
-				args->search = optarg;
+				args->search = strdup(optarg);
 				break;
 			case 't':
 				args->transl = (uint32_t)atoi(optarg);
