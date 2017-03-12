@@ -5,9 +5,9 @@
 /* Affichage d'une sequence */
 void printSeq(Seq *s) {
 
-	char *nomchromo[]={"I","II","III","MT","MTR","AB325691"};
-	printf("%s %s[%i-%i] %s",s->nom,nomchromo[s->chromosome],s->deb,s->fin,s->description);
-	if((strlen(s->sequence)) != s->fin - s->deb + 1)
+	char *chromoName[]={"I","II","III","MT","MTR","AB325691"};
+	printf("%s %s[%i-%i] %s",s->name,chromoName[s->chromosome],s->start,s->end,s->description);
+	if((strlen(s->sequence)) != s->end - s->start + 1)
 		printf(" tronquee a %li bases\n", strlen(s->sequence));
 	else
 	    printf("\n");
@@ -19,7 +19,7 @@ void printSeq(Seq *s) {
 void printAllSeq(Seq *s) {
 
   if(s!=NULL){
-      printAllSeq(s->suiv);
+      printAllSeq(s->next);
       printSeq(s);
       /* inverser ces deux lignes pour afficher la liste a l'envers.
 	 Utile si construite par ajouts en tete : on aura l'ordre
@@ -28,7 +28,7 @@ void printAllSeq(Seq *s) {
 }
 
 /*converti le type du chromosome dans sa valeur enum */
-enum chromosome_t conversionEnum(char * chr){
+enum chromosome_t str2enum(char * chr){
 
 	enum chromosome_t chromosome;
 
@@ -48,7 +48,7 @@ void freeSeq(Seq *s){
 
 	if(s == NULL) return;
 	else{
-		freeSeq(s->suiv);
+		freeSeq(s->next);
 		free(s->sequence);
 		free(s->description);
 		free(s);
@@ -66,7 +66,7 @@ void parseHeader(FILE *fd, Seq *seq){
 
 	for(i=0; i<5; i++){ //lit les 5 premiers champs de la 1ère ligne
 		switch(i){
-			case 0: strcpy(seq->nom , strtok(str," ")); // printf("%s",seq->sequence);Récupère le nom
+			case 0: strcpy(seq->name , strtok(str," ")); // printf("%s",seq->sequence);Récupère le nom
 				break;
 			case 2: strcpy(chromosome, strtok(NULL," ")); // Récupère le champ chromosome pour le parser après
 				break;
@@ -83,9 +83,9 @@ void parseHeader(FILE *fd, Seq *seq){
 	//parse le champ "chromosome"
 	strtok(chromosome,":");
 	strtok(NULL,":");
-	seq->chromosome = conversionEnum(strtok(NULL,":")); //type
-	seq->deb = atoi(strtok(NULL,":")); //debut
-	seq->fin = atoi(strtok(NULL,":")); //fin
+	seq->chromosome = str2enum(strtok(NULL,":")); //type
+	seq->start = atoi(strtok(NULL,":")); //debut
+	seq->end = atoi(strtok(NULL,":")); //fin
 	strtok(NULL,":");
 }
 
@@ -130,11 +130,11 @@ Seq * readSeq(FILE *fd){
 	c = (char)fgetc(fd);
 	if(c == '>'){
 		parseHeader(fd, seq);
-		//if(DEBUG_SEQUENCES) printf("Nom: %s\nChromosome: %d\ndebut: %d\nfin: %d\nDescription: %s\n",seq->nom,seq->chromosome,seq->deb,seq->fin,seq->description);
+		if(DEBUG_SEQUENCES) printf("Nom: %s\nChromosome: %d\ndebut: %d\nfin: %d\nDescription: %s\n",seq->name,seq->chromosome,seq->start,seq->end,seq->description);
 		getSeq(fd, seq, singleLine);
-		//if(DEBUG_SEQUENCES) printf("%s\n",seq->sequence);
+		if(DEBUG_SEQUENCES) printf("%s\n",seq->sequence);
 	}
-	seq->suiv = readSeq(fd); // Appel récursif pour remplir la liste chaînée
+	seq->next = readSeq(fd); // Appel récursif pour remplir la liste chaînée
 
 	return seq;
 }

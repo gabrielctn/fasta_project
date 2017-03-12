@@ -6,14 +6,11 @@
 
 void printSeq(Seq *s);
 void printAllSeq(Seq *s);
-enum chromosome_t conversionEnum(char * chr);
+enum chromosome_t str2enum(char * chr);
 void freeSeq(Seq *s);
 void parseHeader(FILE *fd, Seq *seq);
 void getSeq(FILE *fd, Seq *seq, char *singleLine);
 Seq * readSeq(FILE *fd);
-
-
-
 
 
 #endif
