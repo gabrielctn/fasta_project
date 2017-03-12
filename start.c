@@ -31,6 +31,15 @@ void parseCommandLine(int argc, char *argv[], struct arg *args){
 	char opt;
 	int i;
 
+	if(argc == 1)
+		display_usage();
+	
+	/* Définition des valeurs des arguments par défault */
+	args->occ = 0;
+	args->transl = 0;
+
+	// occurences et traduction sont optionnels,
+	// les chaines pour la recherche de nom ou dans le dictionnaire sont nécessaires
 	while((opt = getopt(argc, argv, "hn:d:r:t:")) != -1){
 		switch (opt){
 			case 'h':
