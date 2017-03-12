@@ -10,12 +10,11 @@
 #include <err.h>
 
 #define FILENAME "data/S_pombe.fasta"
-#define DEBUG_SEQUENCES 0
-#define DEBUG_SEARCH 0
+#define DEBUG_SEQUENCES 0 // La sortie peut être longue car affiche toutes les séquences
+#define DEBUG_SEARCH 1
 #define DESC_SIZE 154
 #define HEADER_SIZE 274
 #define SEQ_LINE_SIZE 60
-#define SEARCH_STRING 20 // longueur max de la chaîne utilisée pour la recherche par nom
 #define EXIT_FAILURE 1
 
 
