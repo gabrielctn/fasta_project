@@ -23,13 +23,13 @@ typedef enum { FALSE, TRUE } bool;
 enum chromosome_t {I, II, III, MT, MTR, AB325691};
 
 typedef struct seq {
-	char nom[17]; // le nom de la sequence sans le '>' initial, termine par '\0'
+	char name[17]; // le nom de la sequence sans le '>' initial, termine par '\0'
 	enum chromosome_t chromosome;
-	int deb; // numero de base de debut
-	int fin; // et de fin
+	int start; // numero de base de debut
+	int end; // et de fin
 	char *description; // copie de la chaine "description"
 	char *sequence;    // toute la sequence sur {A,C,G,T}  sans '\n' terminee par '\0'
-	struct seq *suiv;  // pour faire une liste chainee. NULL si dernier.
+	struct seq *next;  // pour faire une liste chainee. NULL si dernier.
 } Seq;
 
 
