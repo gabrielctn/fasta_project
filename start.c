@@ -19,8 +19,8 @@ void display_usage(){
 
 void freeArg(Arg *args){
 
-	// free(args->search);
-	// free(args->searchDico);
+	free(args->search);
+	free(args->searchDico);
 	free(args);
 }
 
