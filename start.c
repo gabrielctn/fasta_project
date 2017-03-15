@@ -1,4 +1,5 @@
 #include "headers/global.h"
+#include "headers/sequences.h"
 
 
 void display_usage(){
@@ -17,9 +18,57 @@ void display_usage(){
 
 
 
-void freeArg(Options *args){
+void printMenu(){
 
-	free(args->search);
-	free(args->searchDico);
-	free(args);
+	system("clear");
+	printf("********************** Manipulation de séquences nucléiques ou protéiques **********************\n\n");
+	printf("1. Recherche par nom de gène\n");
+	printf("2. Recherche par séquence donnée\n");
+	printf("3. Recherche par position dans le génome\n");
+	printf("4. Recherche de sous-séquence\n");
+}
+
+
+
+Menu * menu(){
+
+	Menu * m = (Menu *) malloc(sizeof(Menu));
+	uint32_t choice;
+	char geneName[MAX_LENGTH_GENE_NAME];
+	char subSequence[MAX_LENGTH_SUB_SEQUENCE];
+	char chromosome[MAX_LENGTH_CHROMOSOME];
+
+	printMenu();
+	printf("\n\nQue voulez-vous faire ? : ");
+	scanf("%u", &choice);
+
+	switch(choice){
+		case 1:
+			printf("Entrez le nom du gène: ");
+			scanf("%s",geneName);
+			m->geneName = strdup(geneName);
+			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+			scanf("%u",&(m->occ));
+			break;
+		case 2:
+			printf("Entrez la séquence (100 caractères max): ");
+			scanf("%s",subSequence);
+			m->subSequence = strdup(subSequence);
+			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+			scanf("%u",&(m->occ));
+			break;
+		case 3:
+			printf("Entrez la position: ");
+			scanf("%u", &(m->position));
+			printf("Entrez le chromosome dans lequel il est supposé être trouvé: ");
+			scanf("%s",chromosome);
+			m->chromosome = str2enum(chromosome);
+			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+			scanf("%u",&(m->occ));
+			break;
+		default:;
+	}
+	printf("\n\n");
+
+	return m;
 }
