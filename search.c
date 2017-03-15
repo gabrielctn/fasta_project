@@ -39,46 +39,46 @@ bool searchByGeneName(Sequences *s, char *geneName, uint32_t occ){
 
 int searchBySequence(Sequences *seq, uint32_t occ, char *search){
   char *rep;
-  uint32_t a=0;
+  uint32_t nbseq=0;
 
   if(seq==NULL) return 0;
 
-  a=searchBySequence(seq->next,occ,search);
+  nbseq=searchBySequence(seq->next,occ,search);
 
-  if(a<occ || occ==0){                                            // tant que le nombre d'occurence n'a pas été trouvé ou si occ=0
+  if(nbseq<occ || occ==0){                                            // tant que le nombre d'occurence n'a pas été trouvé ou si occ=0
     rep=strstr(seq->sequence,search);
     if(rep!=NULL){
       printf("La séquence recherchée a été trouvée dans la séquence %s\n", seq->name);
-      return 1+a;
+      return 1+nbseq;
     }
   }
-  return a;
+  return nbseq;
 }
 
 // Nécessaire de convertir la réponse de l'utilisateur en type enum
 int searchByPosition(Sequences *seq, uint32_t occ, uint32_t position, enum chromosome_t chromosome){
-  uint32_t a=0;
+  uint32_t nbseq=0;
 
   if(seq==NULL) return 0;
 
-  a=searchByPosition(seq->next, occ, position, chromosome);
+  nbseq=searchByPosition(seq->next, occ, position, chromosome);
 
-  if(a<occ || occ==0){
+  if(nbseq<occ || occ==0){
     if(seq->chromosome==chromosome &&
       seq->start < position && seq->end >position){
       printf("La position %d recherchée a été trouvée dans la séquence %s\n", position, seq->name);
-      return a+1;
+      return nbseq+1;
     }
   }
-  return a;
+  return nbseq;
 }
 
 
 void searchBySsSequence(Sequences *seq, uint32_t occ, char *search){
-uint32_t i=0,j=0, a=0;
+uint32_t i=0,j=0, nbseq=0;
 size_t lengthSequence, lengthSearch=strlen(search);
 
-while(seq!=NULL && a<occ){
+while(seq!=NULL && nbseq<occ){
 	lengthSequence=strlen(seq->sequence);
 	while(j<lengthSequence && i<lengthSearch){
 		if(seq->sequence[j]==search[i]){
@@ -88,7 +88,7 @@ while(seq!=NULL && a<occ){
 	}
 	//On regarde les conditions de sortie, si i>=length(sequence) on a trouvé la sous-séquence
 	if(i>=lengthSearch){
-		a++;
+		nbseq++;
 		printf("La sous-séquence %s recherchée a été trouvée dans la séquence %s\n", search, seq->name);
 	}
 		seq=seq->next;
@@ -96,9 +96,9 @@ while(seq!=NULL && a<occ){
 		j=0;
 }
 
-if(a==0){
+if(nbseq==0){
 	printf("Désolé, aucune séquence ne correspond à la sous-séquence %s\n", search);
-}else if(a<occ){
-	printf("\nIl n'y a que %d occurences dans la base.\n", a);
+}else if(nbseq<occ){
+	printf("\nIl n'y a que %d occurences dans la base.\n", nbseq);
 }
 }
