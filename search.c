@@ -37,13 +37,13 @@ bool searchByGeneName(Sequences *s, char *geneName, uint32_t occ){
 }
 
 
-int search_sequence(Sequences *seq, uint32_t occ, char *search){
+int searchBySequence(Sequences *seq, uint32_t occ, char *search){
   char *rep;
   uint32_t a=0;
 
   if(seq==NULL) return 0;
 
-  a=search_sequence(seq->next,occ,search);
+  a=searchBySequence(seq->next,occ,search);
 
   if(a<occ || occ==0){                                            // tant que le nombre d'occurence n'a pas été trouvé ou si occ=0
     rep=strstr(seq->sequence,search);
@@ -56,12 +56,12 @@ int search_sequence(Sequences *seq, uint32_t occ, char *search){
 }
 
 // Nécessaire de convertir la réponse de l'utilisateur en type enum
-int search_position(Sequences *seq, uint32_t occ, uint32_t position, enum chromosome_t chromosome){
+int searchByPosition(Sequences *seq, uint32_t occ, uint32_t position, enum chromosome_t chromosome){
   uint32_t a=0;
 
   if(seq==NULL) return 0;
 
-  a=search_position(seq->next, occ, position, chromosome);
+  a=searchByPosition(seq->next, occ, position, chromosome);
 
   if(a<occ || occ==0){
     if(seq->chromosome==chromosome &&
@@ -71,4 +71,34 @@ int search_position(Sequences *seq, uint32_t occ, uint32_t position, enum chromo
     }
   }
   return a;
+}
+
+
+void searchBySsSequence(Sequences *seq, uint32_t occ, char *search){
+uint32_t i=0,j=0, a=0;
+size_t lengthSequence, lengthSearch=strlen(search);
+
+while(seq!=NULL && a<occ){
+	lengthSequence=strlen(seq->sequence);
+	while(j<lengthSequence && i<lengthSearch){
+		if(seq->sequence[j]==search[i]){
+			i++;
+		}
+		j++;
+	}
+	//On regarde les conditions de sortie, si i>=length(sequence) on a trouvé la sous-séquence
+	if(i>=lengthSearch){
+		a++;
+		printf("La sous-séquence %s recherchée a été trouvée dans la séquence %s\n", search, seq->name);
+	}
+		seq=seq->next;
+		i=0;
+		j=0;
+}
+
+if(a==0){
+	printf("Désolé, aucune séquence ne correspond à la sous-séquence %s\n", search);
+}else if(a<occ){
+	printf("\nIl n'y a que %d occurences dans la base.\n", a);
+}
 }
