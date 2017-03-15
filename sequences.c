@@ -3,7 +3,7 @@
 
 
 /* Affichage d'une sequence */
-void printSeq(Seq *s) {
+void printSeq(Sequences *s) {
 
 	char *chromoName[]={"I","II","III","MT","MTR","AB325691"};
 	printf("%s %s[%i-%i] %s",s->name,chromoName[s->chromosome],s->start,s->end,s->description);
@@ -16,7 +16,7 @@ void printSeq(Seq *s) {
 
 
 /* Affichage de toutes les sequences */
-void printAllSeq(Seq *s) {
+void printAllSeq(Sequences *s) {
 
   if(s!=NULL){
       printAllSeq(s->next);
@@ -44,7 +44,7 @@ enum chromosome_t str2enum(char * chr){
 
 
 /* Libère récursivement la liste chaînée */
-void freeSeq(Seq *s){
+void freeSeq(Sequences *s){
 
 	if(s == NULL) return;
 	else{
@@ -57,7 +57,7 @@ void freeSeq(Seq *s){
 
 
 /* Parse l'entête des séquences */
-void parseHeader(FILE *fd, Seq *seq){
+void parseHeader(FILE *fd, Sequences *seq){
 
 	int i;
 	char str[HEADER_SIZE + 1], chromosome[40];
@@ -91,7 +91,7 @@ void parseHeader(FILE *fd, Seq *seq){
 
 
 /* Récupère la séquence nucléotidique et l'enregistre dans la structure */
-void getSeq(FILE *fd, Seq *seq, char *singleLine){
+void getSeq(FILE *fd, Sequences *seq, char *singleLine){
 
 	char *newSeq;
 	char c = (char)fgetc(fd);
@@ -116,13 +116,13 @@ void getSeq(FILE *fd, Seq *seq, char *singleLine){
 
 
 /* Parse un fichier FASTA en allouant dynamiquement une liste chaînée */
-Seq * readSeq(FILE *fd){
+Sequences * readSeq(FILE *fd){
 
 	char c;
 	char singleLine[SEQ_LINE_SIZE + 2];
 
 	// Allocations dynamiques
-	Seq *seq = (Seq *) malloc(sizeof(Seq));
+	Sequences *seq = (Sequences *) malloc(sizeof(Sequences));
 	seq->sequence = (char *)malloc(SEQ_LINE_SIZE + 1);
 
 	if(feof(fd)) return NULL; // Fin de fichier: fin de la liste chaînée

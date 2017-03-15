@@ -1,7 +1,7 @@
 #include "headers/search.h"
 #include "headers/global.h"
 
-bool searchByGeneName(Seq *s, char *geneName, uint32_t occ){
+bool searchByGeneName(Sequences *s, char *geneName, uint32_t occ){
 
 	int i=0, nbFound = 0;
 

@@ -6,8 +6,8 @@
 
 int main(int argc, char *argv[]) {
 
-	struct arg *args = (struct arg *) malloc(sizeof(struct arg));
-	Seq *sequences;
+	Options *args = (Options *) malloc(sizeof(Options));
+	Sequences *sequences;
 
 	/* Récupère les options de la ligne de commande et initialise la structure arguments */
 	parseCommandLine(argc, argv, args);

@@ -17,7 +17,7 @@ void display_usage(){
 
 
 
-void freeArg(Arg *args){
+void freeArg(Options *args){
 
 	free(args->search);
 	free(args->searchDico);
@@ -26,14 +26,14 @@ void freeArg(Arg *args){
 
 
 
-void parseCommandLine(int argc, char *argv[], struct arg *args){
+void parseCommandLine(int argc, char *argv[], Options *args){
 
 	char opt;
 	int i;
 
 	if(argc == 1)
 		display_usage();
-	
+
 	/* Définition des valeurs des arguments par défault */
 	args->occ = 0;
 	args->transl = 0;
