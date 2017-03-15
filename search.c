@@ -54,3 +54,21 @@ int search_sequence(Sequences *seq, uint32_t occ, char *search){
   }
   return a;
 }
+
+// Nécessaire de convertir la réponse de l'utilisateur en type enum
+int search_position(Sequences *seq, uint32_t occ, uint32_t position, enum chromosome_t chromosome){
+  uint32_t a=0;
+
+  if(seq==NULL) return 0;
+
+  a=search_position(seq->next, occ, position, chromosome);
+
+  if(a<occ || occ==0){
+    if(seq->chromosome==chromosome &&
+      seq->start < position && seq->end >position){
+      printf("La position %d recherchée a été trouvée dans la séquence %s\n", position, seq->name);
+      return a+1;
+    }
+  }
+  return a;
+}
