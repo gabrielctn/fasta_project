@@ -7,6 +7,6 @@
 
 
 bool searchByGeneName(Sequences *s, char *geneName, uint32_t occ);
-
+int search_sequence(Sequences *seq, uint32_t occ, char *search);
 
 #endif
