@@ -12,9 +12,12 @@
 #define FILENAME "data/S_pombe.fasta"
 #define DEBUG_SEQUENCES 0 // Si vaut 1, la sortie peut être longue car affiche toutes les séquences fasta
 #define DEBUG_SEARCH 1
-#define DESC_SIZE 154
+#define DESCRIPTION_SIZE 154
 #define HEADER_SIZE 274
 #define SEQ_LINE_SIZE 60
+#define MAX_LENGTH_GENE_NAME 20
+#define MAX_LENGTH_SUB_SEQUENCE 100
+#define MAX_LENGTH_CHROMOSOME 10
 #define EXIT_FAILURE 1
 
 
@@ -33,11 +36,15 @@ typedef struct sequences {
 } Sequences;
 
 
-typedef struct options {
+typedef struct menu {
 	char *searchDico; // séquence à rechercher dans le dico
-	char *search; // chaine à rechercher dans les séquences
-	uint32_t occ; // nombre d'occurences
+	char *geneName; // nom du gène à rechercher dans les séquences
+	char *subSequence; // séquence donnée pour la recherche
+	enum chromosome_t chromosome; // nom du chromosome pour compléter la recherche par position
+	uint32_t position; // recherche de séquences par position dans le génome
+	uint32_t occ; // nombre d'occurences des séquences à afficher
 	uint32_t transl; // valeur pour choix de traduction
-} Options;
+} Menu;
+
 
 #endif
