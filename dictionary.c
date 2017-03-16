@@ -45,3 +45,15 @@ int searchDictionary(Nucleic_Dico *nd, char *sequence){
         return nd->final;
     return searchDictionary(nd->child[dicoNucleicIndex(nd, sequence[0])], sequence+1);
 }
+
+
+
+
+void initNucleicDictionary(Nucleic_Dico *nd, Sequences *s){
+
+    if(s->next == NULL)
+        return;
+    else
+        insertDictionary(nd, s->sequence);
+    initNucleicDictionary(nd, s->next);
+}
