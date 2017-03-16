@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
 
 	/* FREE ALL */
 	freeSeq(sequences);
+	freeMenu(m);
 
 	fclose(fd);
 

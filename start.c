@@ -30,6 +30,15 @@ void printMenu(){
 
 
 
+void freeMenu(Menu *m){
+
+	free(m->searchDico);
+	free(m->geneName);
+	free(m->subSequence);
+	free(m);
+}
+
+
 Menu * menu(){
 
 	Menu * m = (Menu *) malloc(sizeof(Menu));
