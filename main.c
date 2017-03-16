@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 		searchBySequence(sequences, m->occ, m->searchSequence);
 
 	if(m->subSequence)
-		searchBySsSequence(sequences, m->occ, m->subSequence);
+		searchBySubSequence(sequences, m->occ, m->subSequence);
 
 
 	/* DICTIONNAIRE DE SEQUENCES */

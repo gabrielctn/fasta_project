@@ -74,7 +74,8 @@ int searchByPosition(Sequences *seq, int occ, int position, enum chromosome_t ch
 }
 
 
-void searchBySsSequence(Sequences *seq, int occ, char *search){
+void searchBySubSequence(Sequences *seq, int occ, char *search){
+
 	int i=0,j=0, nbseq=0;
 	size_t lengthSequence, lengthSearch=strlen(search);
 

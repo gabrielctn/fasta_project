@@ -9,6 +9,6 @@
 bool searchByGeneName(Sequences *s, char *geneName, int occ);
 int searchBySequence(Sequences *seq, int occ, char *search);
 int searchByPosition(Sequences *seq, int occ, int position, enum chromosome_t chromosome);
-void searchBySsSequence(Sequences *seq, int occ, char *sequence);
+void searchBySubSequence(Sequences *seq, int occ, char *sequence);
 
 #endif
