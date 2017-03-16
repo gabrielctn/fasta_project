@@ -34,6 +34,7 @@ void freeMenu(Menu *m){
 
 	free(m->searchDico);
 	free(m->geneName);
+	free(m->searchSequence);
 	free(m->subSequence);
 	free(m);
 }
@@ -42,14 +43,15 @@ void freeMenu(Menu *m){
 Menu * menu(){
 
 	Menu * m = (Menu *) malloc(sizeof(Menu));
-	uint32_t choice;
+	int choice;
 	char geneName[MAX_LENGTH_GENE_NAME];
-	char subSequence[MAX_LENGTH_SUB_SEQUENCE];
+	char searchSequence[MAX_LENGTH_SEARCH_SEQUENCE];
 	char chromosome[MAX_LENGTH_CHROMOSOME];
+	char subSequence[MAX_LENGTH_SUB_SEQUENCE];
 
 	printMenu();
 	printf("\n\nQue voulez-vous faire ? : ");
-	scanf("%u", &choice);
+	scanf("%d", &choice);
 
 	switch(choice){
 		case 1:
@@ -57,23 +59,30 @@ Menu * menu(){
 			scanf("%s",geneName);
 			m->geneName = strdup(geneName);
 			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
-			scanf("%u",&(m->occ));
+			scanf("%d",&(m->occ));
 			break;
 		case 2:
 			printf("Entrez la séquence (100 caractères max): ");
-			scanf("%s",subSequence);
-			m->subSequence = strdup(subSequence);
+			scanf("%s",searchSequence);
+			m->searchSequence = strdup(searchSequence);
 			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
-			scanf("%u",&(m->occ));
+			scanf("%d",&(m->occ));
 			break;
 		case 3:
 			printf("Entrez la position: ");
-			scanf("%u", &(m->position));
+			scanf("%d", &(m->position));
 			printf("Entrez le chromosome dans lequel il est supposé être trouvé: ");
 			scanf("%s",chromosome);
 			m->chromosome = str2enum(chromosome);
 			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
-			scanf("%u",&(m->occ));
+			scanf("%d",&(m->occ));
+			break;
+		case 4:
+			printf("Entrez la séquence (100 caractères max): ");
+			scanf("%s",subSequence);
+			m->subSequence = strdup(subSequence);
+			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+			scanf("%d",&(m->occ));
 			break;
 		default:;
 	}
