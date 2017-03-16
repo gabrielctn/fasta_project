@@ -95,6 +95,8 @@ void getSeq(FILE *fd, Sequences *seq, char *singleLine){
 
 	char *newSeq;
 	char c = (char)fgetc(fd);
+	seq->sequence[0] = '\0';
+
 	do{
 		ungetc(c, fd);
 		fgets(singleLine, SEQ_LINE_SIZE + 1, fd);
