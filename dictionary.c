@@ -34,3 +34,14 @@ void insertDictionary(Nucleic_Dico *nd, char *sequence){
         insertDictionary(nd->child[index], sequence+1);
     }
 }
+
+
+
+int searchDictionary(Nucleic_Dico *nd, char *sequence){
+
+    if(nd == NULL)
+        return 0;
+    if(sequence[0] == '\0')
+        return nd->final;
+    return searchDictionary(nd->child[dicoNucleicIndex(nd, sequence[0])], sequence+1);
+}
