@@ -6,11 +6,8 @@
 
 int main(int argc, char *argv[]) {
 
-	Options *args = (Options *) malloc(sizeof(Options));
+	Menu *m = NULL;
 	Sequences *sequences;
-
-	/* Récupère les options de la ligne de commande et initialise la structure arguments */
-	parseCommandLine(argc, argv, args);
 
 	FILE *fd = fopen(FILENAME, "r");
 	if(fd == NULL)
@@ -19,12 +16,18 @@ int main(int argc, char *argv[]) {
 	/* Lit le fichier FASTA et rempli la structure séquences */
 	sequences = readSeq(fd);
 
-	/* Recherche parmis les séquences du fichier FASTA celles qui match le nom de gène donné en argument */
-	searchByGeneName(sequences, args->search, args->occ);
+	/* Affiche le menu et initialise la structure des variables du menu données par l'utilisateur */
+	m = menu();
+
+	if(m->geneName)
+		searchByGeneName(sequences, m->geneName, m->occ);
+
+	if(m->position)
+		searchByPosition(sequences, m->occ, m->position, m->chromosome);
+
 
 	/* FREE ALL */
 	freeSeq(sequences);
-	freeArg(args);
 
 	fclose(fd);
 
