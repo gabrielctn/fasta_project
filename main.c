@@ -37,6 +37,12 @@ int main(int argc, char *argv[]) {
 	/* DICTIONNAIRE DE SEQUENCES */
 	initNucleicDictionary(nd, sequences);
 
+
+	if(searchDictionary(nd, "CAA"))
+		printf("Trouvé !!\n\n");
+	else
+		printf("Pas trouvé !\n\n");
+
 	/* FREE ALL */
 	freeSeq(sequences);
 	freeMenu(m);
