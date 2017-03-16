@@ -17,3 +17,20 @@ int dicoNucleicIndex(Nucleic_Dico *nd, char nucleotide){
     }
     return -1;
 }
+
+
+
+void insertDictionary(Nucleic_Dico *nd, char *sequence){
+
+    int index;
+
+    if(sequence[0] == '\0')
+        nd->final = 1;
+    else if((sequence[0] != 'A') && (sequence[0] != 'C') && (sequence[0] != 'T') && (sequence[0] != 'G'))
+        err(EXIT_FAILURE, "Format de la séquence erroné (A ou C ou T ou G)");
+    else{
+        index = dicoNucleicIndex(nd, sequence[0]);
+        nd->child[index] = (Nucleic_Dico *) calloc(1, sizeof(Nucleic_Dico));
+        insertDictionary(nd->child[index], sequence+1);
+    }
+}
