@@ -25,7 +25,7 @@ void insertDictionary(Nucleic_Dico *nd, char *sequence){
     int index;
 
     if(sequence[0] == '\0')
-        nd->final = 1;
+        nd->end = 1;
     else if((sequence[0] != 'A') && (sequence[0] != 'C') && (sequence[0] != 'T') && (sequence[0] != 'G'))
         err(EXIT_FAILURE, "Format de la séquence erroné (A ou C ou T ou G)");
     else{
@@ -42,7 +42,7 @@ int searchDictionary(Nucleic_Dico *nd, char *sequence){
     if(nd == NULL)
         return 0;
     if(sequence[0] == '\0')
-        return nd->final;
+        return nd->end;
     return searchDictionary(nd->child[dicoNucleicIndex(nd, sequence[0])], sequence+1);
 }
 
