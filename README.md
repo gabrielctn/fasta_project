@@ -9,17 +9,17 @@ Install and execute
 
 To show usage, type: 
 
-`./fasta_project -h`
+`./fasta_project
 
 
 
 Implemented functions
 ---------------------
 
-Search by gene name:
+Search by:
+- gene name
+- sequence
+- position in the genome
+- sub sequence
 
-`./fasta_project -r "SPAC212.11.1"`
 
-Search only the 1st occurence:
-
-`./fasta_project -n 1 -r "SPAC212.11.1"`
