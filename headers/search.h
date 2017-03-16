@@ -6,9 +6,9 @@
 
 
 
-bool searchByGeneName(Sequences *s, char *geneName, uint32_t occ);
-int searchBySequence(Sequences *seq, uint32_t occ, char *search);
-int searchByPosition(Sequences *seq, uint32_t occ, uint32_t position, enum chromosome_t chromosome);
-void searchBySsSequence(Sequences *seq, uint32_t occ, char *sequence);
+bool searchByGeneName(Sequences *s, char *geneName, int occ);
+int searchBySequence(Sequences *seq, int occ, char *search);
+int searchByPosition(Sequences *seq, int occ, int position, enum chromosome_t chromosome);
+void searchBySsSequence(Sequences *seq, int occ, char *sequence);
 
 #endif
