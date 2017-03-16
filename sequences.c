@@ -76,7 +76,7 @@ void parseHeader(FILE *fd, Sequences *seq){
 
 	//parse l'entête
 	strtok(NULL,"\"");
-	seq->description = (char *)malloc(DESC_SIZE + 1);
+	seq->description = (char *)malloc(DESCRIPTION_SIZE + 1);
 	strcpy(seq->description , strtok(NULL,"\""));
 
 
