@@ -4,7 +4,8 @@
 #include "sequences.h"
 
 typedef struct nucleic_dico {
-    char final;
+    int nb; // nombre de séquences qui passent par ce nœud
+    char end; // vaut 0 ou 1, si état final
     struct nucleic_dico * child[4];
 } Nucleic_Dico;
 
