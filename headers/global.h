@@ -16,6 +16,7 @@
 #define HEADER_SIZE 274
 #define SEQ_LINE_SIZE 60
 #define MAX_LENGTH_GENE_NAME 20
+#define MAX_LENGTH_SEARCH_SEQUENCE 100
 #define MAX_LENGTH_SUB_SEQUENCE 100
 #define MAX_LENGTH_CHROMOSOME 10
 #define EXIT_FAILURE 1
@@ -39,11 +40,12 @@ typedef struct sequences {
 typedef struct menu {
 	char *searchDico; // séquence à rechercher dans le dico
 	char *geneName; // nom du gène à rechercher dans les séquences
-	char *subSequence; // séquence donnée pour la recherche
+	char *searchSequence; // séquence donnée pour la recherche
+	char *subSequence; // pour la recherche par sous séquence
 	enum chromosome_t chromosome; // nom du chromosome pour compléter la recherche par position
-	uint32_t position; // recherche de séquences par position dans le génome
-	uint32_t occ; // nombre d'occurences des séquences à afficher
-	uint32_t transl; // valeur pour choix de traduction
+	int position; // recherche de séquences par position dans le génome
+	int occ; // nombre d'occurences des séquences à afficher
+	int transl; // valeur pour choix de traduction
 } Menu;
 
 
