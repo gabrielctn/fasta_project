@@ -2,12 +2,14 @@
 #include "headers/search.h"
 #include "headers/sequences.h"
 #include "headers/start.h"
+#include "headers/dictionary.h"
 
 
 int main(int argc, char *argv[]) {
 
 	Menu *m = NULL;
 	Sequences *sequences;
+	Nucleic_Dico *nd = (Nucleic_Dico *) malloc(sizeof(Nucleic_Dico));
 
 	FILE *fd = fopen(FILENAME, "r");
 	if(fd == NULL)
@@ -30,6 +32,10 @@ int main(int argc, char *argv[]) {
 
 	if(m->subSequence)
 		searchBySsSequence(sequences, m->occ, m->subSequence);
+
+
+	/* DICTIONNAIRE DE SEQUENCES */
+	initNucleicDictionary(nd, sequences);
 
 	/* FREE ALL */
 	freeSeq(sequences);

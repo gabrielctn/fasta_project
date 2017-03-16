@@ -9,7 +9,7 @@ void display_usage(){
 
 	printf("  -h					print this help and exit\n");
 	printf("  -n OCCURENCES			set number of occurences to print. VALUES: 0 (all) 1 (first) >1 (n first) DEFAULT is all\n");
-	printf("  -d STRING				string used for search or insertion in dictionnary\n");
+	printf("  -d STRING				string used for search or insertion in dictionary\n");
 	printf("  -r STRING				string (gene name, sequence etc.) used for searching in the file\n");
 	printf("  -t NB_GENES			set number of genes to translate\n\n");
 
