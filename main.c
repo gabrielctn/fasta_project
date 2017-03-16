@@ -25,6 +25,11 @@ int main(int argc, char *argv[]) {
 	if(m->position)
 		searchByPosition(sequences, m->occ, m->position, m->chromosome);
 
+	if(m->searchSequence)
+		searchBySequence(sequences, m->occ, m->searchSequence);
+
+	if(m->subSequence)
+		searchBySsSequence(sequences, m->occ, m->subSequence);
 
 	/* FREE ALL */
 	freeSeq(sequences);
