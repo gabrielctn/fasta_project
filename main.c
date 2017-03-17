@@ -1,15 +1,19 @@
 #include "headers/global.h"
 #include "headers/search.h"
-#include "headers/sequences.h"
 #include "headers/start.h"
 #include "headers/dictionary.h"
 
 
 int main(int argc, char *argv[]) {
 
-	Menu *m = NULL;
+	// Allocation de la structure contenant les variables du menu
+	Menu *m = (Menu *) malloc(sizeof(Menu));
 	Sequences *sequences;
+	// Allocation du dictionnaire
 	Nucleic_Dico *nd = (Nucleic_Dico *) malloc(sizeof(Nucleic_Dico));
+	nd->nb = 0;
+
+	int nbPrefix;
 
 	FILE *fd = fopen(FILENAME, "r");
 	if(fd == NULL)
@@ -19,29 +23,40 @@ int main(int argc, char *argv[]) {
 	sequences = readSeq(fd);
 
 	/* Affiche le menu et initialise la structure des variables du menu données par l'utilisateur */
-	m = menu();
+	int choice = menu(m);
 
-	if(m->geneName)
-		searchByGeneName(sequences, m->geneName, m->occ);
+	switch(choice){
+		case 1:
+			searchByGeneName(sequences, m->searchString, m->occ);
+			break;
+		case 2:
+			searchBySequence(sequences, m->occ, m->searchString);
+			break;
+		case 3:
+			searchByPosition(sequences, m->occ, m->position, m->chromosome);
+			break;
+		case 4:
+			searchBySubSequence(sequences, m->occ, m->searchString);
+			break;
+		case 5:
+			initNucleicDictionary(nd, sequences);
+			printf("Recherche de la séquence \"%s\" dans le dictionnaire\n\n", m->searchString);
+			if(searchSeqDictionary(nd, m->searchString))
+				printf("Trouvé ! La séquence se trouve dans le dictionnaire\n\n");
+			else
+				printf("Désolé, aucune séquence correspondant ne se trouve dans le dictionnaire\n\n");
+			break;
+		case 6:
+			initNucleicDictionary(nd, sequences);
+			printf("Recherche du nombre de séquences commençant par \"%s\" dans le dictionnaire\n\n", m->searchString);
+			if((nbPrefix = searchNbPrefixDictionary(nd, m->searchString)))
+				printf("Il y a %d séquences dont \"%s\" est le préfix\n\n", nbPrefix, m->searchString);
+			else
+				printf("Aucune séquence commence par \"%s\"\n\n", m->searchString);
+			break;
+		default:;
+	}
 
-	if(m->position)
-		searchByPosition(sequences, m->occ, m->position, m->chromosome);
-
-	if(m->searchSequence)
-		searchBySequence(sequences, m->occ, m->searchSequence);
-
-	if(m->subSequence)
-		searchBySubSequence(sequences, m->occ, m->subSequence);
-
-
-	/* DICTIONNAIRE DE SEQUENCES */
-	initNucleicDictionary(nd, sequences);
-
-
-	if(searchDictionary(nd, "CAA"))
-		printf("Trouvé !!\n\n");
-	else
-		printf("Pas trouvé !\n\n");
 
 	/* FREE ALL */
 	freeSeq(sequences);
