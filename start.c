@@ -1,6 +1,6 @@
 #include "headers/global.h"
 #include "headers/sequences.h"
-
+#include "headers/start.h"
 
 void display_usage(){
 
@@ -26,45 +26,47 @@ void printMenu(){
 	printf("2. Recherche par séquence donnée\n");
 	printf("3. Recherche par position dans le génome\n");
 	printf("4. Recherche de sous-séquence\n");
+	printf("5. Recherche de séquence dans le dictionnaire\n");
+	printf("6. Recherche de séquences par préfixe dans le dictionnaire\n");
 }
 
 
 
 void freeMenu(Menu *m){
 
-	free(m->searchDico);
-	free(m->geneName);
-	free(m->searchSequence);
-	free(m->subSequence);
+	free(m->searchString);
 	free(m);
 }
 
 
-Menu * menu(){
+int menu(Menu *m){
 
-	Menu * m = (Menu *) malloc(sizeof(Menu));
 	int choice;
 	char geneName[MAX_LENGTH_GENE_NAME];
 	char searchSequence[MAX_LENGTH_SEARCH_SEQUENCE];
 	char chromosome[MAX_LENGTH_CHROMOSOME];
 	char subSequence[MAX_LENGTH_SUB_SEQUENCE];
+	char dicoSearchSeq[MAX_LENGTH_DICO_SEARCH_SEQUENCE];
+	char dicoPrefixSearch[MAX_LENGTH_DICO_PREFIX_SEARCH];
 
 	printMenu();
-	printf("\n\nQue voulez-vous faire ? : ");
-	scanf("%d", &choice);
+	do{
+		printf("\n\nQue voulez-vous faire ? : ");
+		scanf("%d", &choice);
+	} while(choice < 1 && choice > 6);
 
 	switch(choice){
 		case 1:
 			printf("Entrez le nom du gène: ");
 			scanf("%s",geneName);
-			m->geneName = strdup(geneName);
+			m->searchString = strdup(geneName);
 			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
 			scanf("%d",&(m->occ));
 			break;
 		case 2:
 			printf("Entrez la séquence (100 caractères max): ");
 			scanf("%s",searchSequence);
-			m->searchSequence = strdup(searchSequence);
+			m->searchString = strdup(searchSequence);
 			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
 			scanf("%d",&(m->occ));
 			break;
@@ -80,7 +82,21 @@ Menu * menu(){
 		case 4:
 			printf("Entrez la séquence (100 caractères max): ");
 			scanf("%s",subSequence);
-			m->subSequence = strdup(subSequence);
+			m->searchString = strdup(subSequence);
+			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+			scanf("%d",&(m->occ));
+			break;
+		case 5:
+			printf("Entrez la séquence (500 caractères max): ");
+			scanf("%s",dicoSearchSeq);
+			m->searchString = strdup(dicoSearchSeq);
+			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+			scanf("%d",&(m->occ));
+			break;
+		case 6:
+			printf("Entrez le préfixe (100 caractères max): ");
+			scanf("%s",dicoPrefixSearch);
+			m->searchString = strdup(dicoPrefixSearch);
 			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
 			scanf("%d",&(m->occ));
 			break;
@@ -88,5 +104,5 @@ Menu * menu(){
 	}
 	printf("\n\n");
 
-	return m;
+	return choice;
 }
