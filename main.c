@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 	Menu *m = (Menu *) malloc(sizeof(Menu));
 	Sequences *sequences;
 	// Allocation du dictionnaire
-	Nucleic_Dico *nd = (Nucleic_Dico *) malloc(sizeof(Nucleic_Dico));
+	Nucleic_Dict *nd = (Nucleic_Dict *) malloc(sizeof(Nucleic_Dict));
 
 	int nbPrefix;
 	int choice;
