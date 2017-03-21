@@ -5,14 +5,14 @@
 
 void printMenu(){
 
-	system("clear");
-	printf("********************** Manipulation de séquences nucléiques ou protéiques **********************\n\n");
+	printf("\n\n\n********************** Manipulation de séquences nucléiques ou protéiques **********************\n\n");
 	printf("1. Recherche par nom de gène\n");
 	printf("2. Recherche par séquence donnée\n");
 	printf("3. Recherche par position dans le génome\n");
 	printf("4. Recherche de sous-séquence\n");
 	printf("5. Recherche de séquence dans le dictionnaire\n");
 	printf("6. Recherche de séquences par préfixe dans le dictionnaire\n");
+	printf("7. Quitter\n");
 }
 
 
@@ -35,10 +35,11 @@ int menu(Menu *m){
 	char dicoPrefixSearch[MAX_LENGTH_DICO_PREFIX_SEARCH];
 
 	printMenu();
+
 	do{
 		printf("\n\nQue voulez-vous faire ? : ");
 		scanf("%d", &choice);
-	} while(choice < 1 && choice > 6);
+	} while(choice < 1 && choice > 7);
 
 	switch(choice){
 		case 1:
@@ -82,8 +83,6 @@ int menu(Menu *m){
 			printf("Entrez le préfixe (100 caractères max): ");
 			scanf("%s",dicoPrefixSearch);
 			m->searchString = strdup(dicoPrefixSearch);
-			printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
-			scanf("%d",&(m->occ));
 			break;
 		default:;
 	}
