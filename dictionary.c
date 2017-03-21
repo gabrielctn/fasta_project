@@ -2,7 +2,7 @@
 #include "headers/global.h"
 
 
-int dicoNucleicIndex(Nucleic_Dico *nd, char nucleotide){
+int dicoNucleicIndex(char nucleotide){
 
     switch(nucleotide){
         case 'A': return 0; break;
@@ -27,7 +27,7 @@ void insertDictionary(Nucleic_Dico *nd, char *sequence){
     else if((sequence[0] != 'A') && (sequence[0] != 'C') && (sequence[0] != 'T') && (sequence[0] != 'G'))
         err(EXIT_FAILURE, "Format de la séquence erroné (A ou C ou T ou G)");
     else{
-        index = dicoNucleicIndex(nd, sequence[0]);
+        index = dicoNucleicIndex(sequence[0]);
         if(nd->child[index] == NULL){
             nd->child[index] = (Nucleic_Dico *) calloc(1, sizeof(Nucleic_Dico));
             (nd->child[index]->nb)++;
@@ -46,7 +46,7 @@ int searchSeqDictionary(Nucleic_Dico *nd, char *sequence){
         return 0;
     if(sequence[0] == '\0')
         return nd->end;
-    return searchSeqDictionary(nd->child[dicoNucleicIndex(nd, sequence[0])], sequence+1);
+    return searchSeqDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence+1);
 }
 
 
@@ -57,7 +57,7 @@ int searchNbPrefixDictionary(Nucleic_Dico *nd, char *sequence){
         return 0;
     if(sequence[0] == '\0')
         return nd->nb;
-    return searchNbPrefixDictionary(nd->child[dicoNucleicIndex(nd, sequence[0])], sequence+1);
+    return searchNbPrefixDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence+1);
 }
 
 
