@@ -17,6 +17,51 @@ void printMenu(){
 
 
 
+void display_usage(){
+
+	printf("\n\n********** USAGE **********\n\n");
+	printf("./projet [-h] or [-n] or [-p]\n\n");
+
+	printf("  -h	Print this help and exit\n");
+	printf("  -n	The FASTA file contains nucleotide sequences\n");
+	printf("  -p	The FASTA file contains proteic sequences\n");
+
+	exit(EXIT_FAILURE);
+}
+
+
+
+void parseCommandLine(int argc, char *argv[], Options *args){
+
+	char opt;
+	int i;
+
+	if(argc != 2)
+		display_usage();
+
+	while((opt = getopt(argc, argv, "hnp")) != -1){
+		switch(opt){
+			case 'h':
+				display_usage();
+			case 'n':
+				args->nucleic = TRUE;
+				break;
+			case 'p':
+				args->proteic = TRUE;
+				break;
+			default: abort();
+		}
+	}
+
+	for(i=optind; i<argc; i++)
+		printf("Non-option argument %s\n", argv[i]);
+}
+
+
+
+
+
+
 void freeMenu(Menu *m){
 
 	free(m->searchString);
