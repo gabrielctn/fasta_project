@@ -9,7 +9,7 @@ int dicoNucleicIndex(char nucleotide){
         case 'C': return 1; break;
         case 'T': return 2; break;
         case 'G': return 3; break;
-        default:;
+        default: err(EXIT_FAILURE, "Erreur: %c est un nucléotide inconnu au bataillon (A ou C ou T ou G) !", nucleotide);
     }
     return -1;
 }
@@ -23,8 +23,6 @@ void insertDictionary(Nucleic_Dict *nd, char *sequence){
     if(sequence[0] == '\0'){
         nd->end = 1;
     }
-    else if((sequence[0] != 'A') && (sequence[0] != 'C') && (sequence[0] != 'T') && (sequence[0] != 'G'))
-        err(EXIT_FAILURE, "Format de la séquence erroné (A ou C ou T ou G)");
     else{
         index = dicoNucleicIndex(sequence[0]);
         if(nd->child[index] == NULL){
