@@ -28,5 +28,6 @@ void printMenu();
 int menu(Menu *m);
 void freeMenu(Menu *m);
 void display_usage();
+void parseCommandLine(int argc, char *argv[], Options *args);
 
 #endif
