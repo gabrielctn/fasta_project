@@ -9,9 +9,6 @@
 #include <ctype.h>
 #include <err.h>
 
-#define FILENAME "data/S_pombe.fasta"
-#define DEBUG_SEQUENCES 0 // Si vaut 1, la sortie peut être longue car affiche toutes les séquences fasta
-#define DEBUG_SEARCH 1
 #define EXIT_FAILURE 1
 
 typedef enum { FALSE, TRUE } bool;
