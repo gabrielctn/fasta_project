@@ -7,9 +7,16 @@
 
 int main(int argc, char *argv[]) {
 
+	// Allocation des arguments en ligne de commande
+	Options *args = (Options *) malloc(sizeof(Options));
+	args->nucleic = FALSE;
+	args->proteic = FALSE;
+	parseCommandLine(argc, argv, args);
+
 	// Allocation de la structure contenant les variables du menu
 	Menu *m = (Menu *) malloc(sizeof(Menu));
 	Sequences *sequences;
+
 	// Allocation du dictionnaire
 	Nucleic_Dict *nd = (Nucleic_Dict *) malloc(sizeof(Nucleic_Dict));
 
@@ -19,6 +26,7 @@ int main(int argc, char *argv[]) {
 	FILE *fd = fopen(FILENAME, "r");
 	if(fd == NULL)
 		err(EXIT_FAILURE,"Erreur fopen: %s:",FILENAME);
+
 
 	/* Lit le fichier FASTA et rempli la structure séquences */
 	sequences = readSeq(fd);
@@ -46,7 +54,7 @@ int main(int argc, char *argv[]) {
 				if(searchSeqDictionary(nd, m->searchString))
 					printf("Trouvé ! La séquence se trouve dans le dictionnaire\n\n");
 				else
-					printf("Désolé, aucune séquence correspondant ne se trouve dans le dictionnaire\n\n");
+					printf("Désolé, aucune séquence correspondante ne se trouve dans le dictionnaire\n\n");
 				break;
 			case 6:
 				printf("Recherche du nombre de séquences commençant par \"%s\" dans le dictionnaire\n\n", m->searchString);
@@ -59,7 +67,8 @@ int main(int argc, char *argv[]) {
 		}
 	} while(choice != 7);
 
-	printf("\n\nAu revoir cher bioinformaticien ...\n\n");
+	system("clear");
+	printf("\nAu revoir cher bioinformaticien ...\n\n");
 
 	/* FREE ALL */
 	freeSeq(sequences);
