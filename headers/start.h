@@ -18,8 +18,15 @@ typedef struct menu {
 } Menu;
 
 
+typedef struct args{
+	bool nucleic;
+	bool proteic;
+} Options;
+
+
 void printMenu();
 int menu(Menu *m);
 void freeMenu(Menu *m);
+void display_usage();
 
 #endif
