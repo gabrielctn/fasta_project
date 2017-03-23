@@ -3,6 +3,7 @@
 #include "headers/start.h"
 #include "headers/dictionary.h"
 
+#define FILENAME "data/S_pombe.fasta"
 
 int main(int argc, char *argv[]) {
 
