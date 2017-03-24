@@ -9,8 +9,7 @@ Install and execute
 
 To show usage, type: 
 
-`./fasta_project
-
+`./fasta_project`
 
 
 Implemented functions
