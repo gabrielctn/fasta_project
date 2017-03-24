@@ -1,6 +1,7 @@
 #include "headers/sequences.h"
 #include "headers/global.h"
 
+#define DEBUG_SEQUENCES 0 // Si vaut 1, la sortie peut être longue car affiche toutes les séquences fasta
 
 /* Affichage d'une sequence */
 void printSeq(Sequences *s) {
@@ -76,7 +77,7 @@ void parseHeader(FILE *fd, Sequences *seq){
 
 	//parse l'entête
 	strtok(NULL,"\"");
-	seq->description = (char *)malloc(DESC_SIZE + 1);
+	seq->description = (char *)malloc(DESCRIPTION_SIZE + 1);
 	strcpy(seq->description , strtok(NULL,"\""));
 
 
@@ -95,6 +96,8 @@ void getSeq(FILE *fd, Sequences *seq, char *singleLine){
 
 	char *newSeq;
 	char c = (char)fgetc(fd);
+	seq->sequence[0] = '\0';
+
 	do{
 		ungetc(c, fd);
 		fgets(singleLine, SEQ_LINE_SIZE + 1, fd);
