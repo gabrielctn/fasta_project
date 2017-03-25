@@ -20,7 +20,7 @@ void printMenu(){
 void display_usage(){
 
 	printf("\n\n********** USAGE **********\n\n");
-	printf("./projet [-h] or [-n] or [-p]\n\n");
+	printf("./projet [-h] or [-n NUCLEIC_FILENAME] or [-p PROTEIC_FILENAME]\n\n");
 
 	printf("  -h	Print this help and exit\n");
 	printf("  -n	The FASTA file contains nucleotide sequences\n");
@@ -36,18 +36,20 @@ void parseCommandLine(int argc, char *argv[], Options *args){
 	char opt;
 	int i;
 
-	if(argc != 2)
+	if(argc != 3)
 		display_usage();
 
-	while((opt = getopt(argc, argv, "hnp")) != -1){
+	while((opt = getopt(argc, argv, "hn:p:")) != -1){
 		switch(opt){
 			case 'h':
 				display_usage();
 			case 'n':
 				args->nucleic = TRUE;
+				args->nuclFile = strdup(optarg);
 				break;
 			case 'p':
 				args->proteic = TRUE;
+				args->protFile = strdup(optarg);
 				break;
 			default: abort();
 		}

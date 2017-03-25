@@ -20,7 +20,9 @@ typedef struct menu {
 
 typedef struct args{
 	bool nucleic;
+	char *nuclFile;
 	bool proteic;
+	char *protFile;
 } Options;
 
 
