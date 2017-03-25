@@ -24,7 +24,7 @@ void display_usage(){
 
 	printf("  -h	Print this help and exit\n");
 	printf("  -n	The FASTA file contains nucleotide sequences\n");
-	printf("  -p	The FASTA file contains proteic sequences\n");
+	printf("  -p	The FASTA file contains proteic sequences\n\n\n");
 
 	exit(EXIT_FAILURE);
 }
@@ -36,7 +36,7 @@ void parseCommandLine(int argc, char *argv[], Options *args){
 	char opt;
 	int i;
 
-	if(argc != 3)
+	if(argc <=1)
 		display_usage();
 
 	while((opt = getopt(argc, argv, "hn:p:")) != -1){
@@ -60,7 +60,21 @@ void parseCommandLine(int argc, char *argv[], Options *args){
 }
 
 
+FILE *openFile(Options *args){
 
+	FILE *fd;
+	if(args->nucleic == TRUE){
+		fd = fopen(args->nuclFile, "r");
+		if(fd == NULL)
+			err(EXIT_FAILURE,"Erreur fopen: %s:",args->nuclFile);
+		return fd;
+	} else{
+		fd = fopen(args->protFile, "r");
+		if(fd == NULL)
+			err(EXIT_FAILURE,"Erreur fopen: %s:",args->nuclFile);
+		return fd;
+	}
+}
 
 
 

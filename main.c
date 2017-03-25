@@ -3,7 +3,6 @@
 #include "headers/start.h"
 #include "headers/dictionary.h"
 
-#define FILENAME "data/S_pombe.fasta"
 
 int main(int argc, char *argv[]) {
 
@@ -23,10 +22,7 @@ int main(int argc, char *argv[]) {
 	int nbPrefix;
 	int choice;
 
-	FILE *fd = fopen(FILENAME, "r");
-	if(fd == NULL)
-		err(EXIT_FAILURE,"Erreur fopen: %s:",FILENAME);
-
+	FILE *fd = openFile(args);
 
 	/* Lit le fichier FASTA et rempli la structure séquences */
 	sequences = readSeq(fd);
