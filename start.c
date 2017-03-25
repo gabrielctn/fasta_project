@@ -85,6 +85,14 @@ void freeMenu(Menu *m){
 }
 
 
+void freeOpt(Options *args){
+
+	free(args->nuclFile);
+	free(args->protFile);
+	free(args);
+}
+
+
 int menu(Menu *m){
 
 	int choice;
