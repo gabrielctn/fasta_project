@@ -71,7 +71,7 @@ FILE *openFile(Options *args){
 	} else{
 		fd = fopen(args->protFile, "r");
 		if(fd == NULL)
-			err(EXIT_FAILURE,"Erreur fopen: %s:",args->nuclFile);
+			err(EXIT_FAILURE,"Erreur fopen: %s:",args->protFile);
 		return fd;
 	}
 }
