@@ -141,3 +141,11 @@ Sequences * readSeq(FILE *fd){
 
 	return seq;
 }
+
+
+
+long totalLengthSequences(Sequences *seq){
+
+	if(seq == NULL) return 0;
+	return strlen(seq->sequence) + totalLengthSequences(seq->next);
+}

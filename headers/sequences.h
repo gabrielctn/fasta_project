@@ -28,6 +28,7 @@ void freeSeq(Sequences *s);
 void parseHeader(FILE *fd, Sequences *seq);
 void getSeq(FILE *fd, Sequences *seq, char *singleLine);
 Sequences * readSeq(FILE *fd);
+long totalLengthSequences(Sequences *seq);
 
 
 #endif
