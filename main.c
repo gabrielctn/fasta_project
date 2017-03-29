@@ -63,7 +63,6 @@ int main(int argc, char *argv[]) {
 			case 7:
 				if(args->nucleic == TRUE)
 					translate(sequences);
-					//printf("Votre traduction se trouve dans le fichier ....\n");
 				else
 					printf("Fichier non nucléique, impossible de traduire\n");
 				break;

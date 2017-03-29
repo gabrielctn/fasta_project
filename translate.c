@@ -36,7 +36,9 @@ void compare(char *protein, char *tmp, Code *tab, int k){
 void translate(Sequences *seq){
     char tmp[4];
     Code *tab= initialize();
-    printf("%s\n", tab[0].codon);
+    FILE *fd;
+    fd=fopen("data/translation.txt","w");
+
     while(seq!=NULL){
         char *sequence;
         int i,j=0,k=0;
@@ -60,17 +62,24 @@ void translate(Sequences *seq){
                 k++;
             }while(sequence[j]=='A' ||sequence[j]=='C' ||sequence[j]=='G' ||sequence[j]=='T');      // Tant que la séquence n'est pas finie
 
+
             // Commentaire suivant si la séquence a pu être traduite entièrement ou si un codon STOP est au milieu de la séquence
             if(sequence[j]=='A' ||sequence[j]=='C' ||sequence[j]=='G' ||sequence[j]=='T'){
-                printf("Attention, le codon STOP est prématuré");
-                printf("Traduction du gène %s : \n %s\n", seq->name, protein);
+                fprintf(fd,"Attention, le codon STOP est prématuré\n");
+                fprintf(fd,"Traduction du gène %s : \n", seq->name);
             }else if(protein[k]!='Z'){
-                printf("Attention, il n'y a pas de codon STOP  ");
-                printf("Traduction du gène %s : \n %s\n", seq->name, protein);
-            }else{
-                printf("Traduction du gène %s : \n %s\n", seq->name, protein);
+                fprintf(fd,"Attention, il n'y a pas de codon STOP\n");
+                fprintf(fd,"Traduction du gène %s : \n", seq->name);
             }
+            for(i=0;i<strlen(protein);i++){
+                if(i%61==0 && i!=0){
+                    fputs("\n",fd);
+                }
+                fputc(protein[i],fd);
+            }
+            fputs("\n\n",fd);
         }
         seq=seq->next;
     }
+    fclose(fd);
 }
