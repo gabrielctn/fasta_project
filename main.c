@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 
     FILE *fd = fopen(FILENAME, "r");
     if(fd == NULL)
-        err(EXIT_FAILURE,"Erreur fopen: %s:",FILENAME);
+        err(EXIT_FAILURE, "Erreur fopen: %s:", FILENAME);
 
 
     /* Lit le fichier FASTA et rempli la structure séquences */

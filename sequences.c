@@ -7,8 +7,8 @@
 void printSeq(Sequences *s)
 {
 
-    char *chromoName[]= {"I","II","III","MT","MTR","AB325691"};
-    printf("%s %s[%i-%i] %s",s->name,chromoName[s->chromosome],s->start,s->end,s->description);
+    char *chromoName[] = {"I", "II", "III", "MT", "MTR", "AB325691"};
+    printf("%s %s[%i-%i] %s", s->name, chromoName[s->chromosome], s->start, s->end, s->description);
     if((strlen(s->sequence)) != s->end - s->start + 1)
         printf(" tronquee a %li bases\n", strlen(s->sequence));
     else
@@ -21,7 +21,7 @@ void printSeq(Sequences *s)
 void printAllSeq(Sequences *s)
 {
 
-    if(s!=NULL)
+    if(s != NULL)
     {
         printAllSeq(s->next);
         printSeq(s);
@@ -37,12 +37,12 @@ enum chromosome_t str2enum(char * chr)
 
     enum chromosome_t chromosome;
 
-    if(strcmp(chr,"I") == 0) chromosome = I;
-    if(strcmp(chr,"II") == 0) chromosome = II;
-    if(strcmp(chr,"III") == 0) chromosome = III;
-    if(strcmp(chr,"MT") == 0) chromosome = MT;
-    if(strcmp(chr,"MTR") == 0) chromosome = MTR;
-    if(strcmp(chr,"AB325691") == 0) chromosome = AB325691;
+    if(strcmp(chr, "I") == 0) chromosome = I;
+    if(strcmp(chr, "II") == 0) chromosome = II;
+    if(strcmp(chr, "III") == 0) chromosome = III;
+    if(strcmp(chr, "MT") == 0) chromosome = MT;
+    if(strcmp(chr, "MTR") == 0) chromosome = MTR;
+    if(strcmp(chr, "AB325691") == 0) chromosome = AB325691;
 
     return chromosome;
 }
@@ -72,34 +72,34 @@ void parseHeader(FILE *fd, Sequences *seq)
 
     fgets(str, HEADER_SIZE + 1, fd);// récupère 1ère ligne
 
-    for(i=0; i<5; i++)  //lit les 5 premiers champs de la 1ère ligne
+    for(i = 0; i < 5; i++) //lit les 5 premiers champs de la 1ère ligne
     {
         switch(i)
         {
         case 0:
-            strcpy(seq->name, strtok(str," "));  // printf("%s",seq->sequence);Récupère le nom
+            strcpy(seq->name, strtok(str, " ")); // printf("%s",seq->sequence);Récupère le nom
             break;
         case 2:
-            strcpy(chromosome, strtok(NULL," ")); // Récupère le champ chromosome pour le parser après
+            strcpy(chromosome, strtok(NULL, " ")); // Récupère le champ chromosome pour le parser après
             break;
         default:
-            strtok(NULL," ");
+            strtok(NULL, " ");
         }
     }
 
     //parse l'entête
-    strtok(NULL,"\"");
+    strtok(NULL, "\"");
     seq->description = (char *)malloc(DESCRIPTION_SIZE + 1);
-    strcpy(seq->description, strtok(NULL,"\""));
+    strcpy(seq->description, strtok(NULL, "\""));
 
 
     //parse le champ "chromosome"
-    strtok(chromosome,":");
-    strtok(NULL,":");
-    seq->chromosome = str2enum(strtok(NULL,":")); //type
-    seq->start = atoi(strtok(NULL,":")); //debut
-    seq->end = atoi(strtok(NULL,":")); //fin
-    strtok(NULL,":");
+    strtok(chromosome, ":");
+    strtok(NULL, ":");
+    seq->chromosome = str2enum(strtok(NULL, ":")); //type
+    seq->start = atoi(strtok(NULL, ":")); //debut
+    seq->end = atoi(strtok(NULL, ":")); //fin
+    strtok(NULL, ":");
 }
 
 
@@ -116,7 +116,7 @@ void getSeq(FILE *fd, Sequences *seq, char *singleLine)
         ungetc(c, fd);
         fgets(singleLine, SEQ_LINE_SIZE + 1, fd);
         c = (char)fgetc(fd);
-        if(c != '\n') ungetc(c,fd); // Enlève le retour à la ligne
+        if(c != '\n') ungetc(c, fd); // Enlève le retour à la ligne
         newSeq = (char *) realloc(seq->sequence, strlen(seq->sequence) + strlen(singleLine) + 1);
         if(newSeq == NULL)
         {
@@ -152,9 +152,9 @@ Sequences * readSeq(FILE *fd)
     if(c == '>')
     {
         parseHeader(fd, seq);
-        if(DEBUG_SEQUENCES) printf("Nom: %s\nChromosome: %d\ndebut: %d\nfin: %d\nDescription: %s\n",seq->name,seq->chromosome,seq->start,seq->end,seq->description);
+        if(DEBUG_SEQUENCES) printf("Nom: %s\nChromosome: %d\ndebut: %d\nfin: %d\nDescription: %s\n", seq->name, seq->chromosome, seq->start, seq->end, seq->description);
         getSeq(fd, seq, singleLine);
-        if(DEBUG_SEQUENCES) printf("%s\n",seq->sequence);
+        if(DEBUG_SEQUENCES) printf("%s\n", seq->sequence);
     }
     seq->next = readSeq(fd); // Appel récursif pour remplir la liste chaînée
 

@@ -43,7 +43,7 @@ void insertDictionary(Nucleic_Dict *nd, char *sequence)
         {
             nd->child[index] = (Nucleic_Dict *) calloc(1, sizeof(Nucleic_Dict));
         }
-        insertDictionary(nd->child[index], sequence+1);
+        insertDictionary(nd->child[index], sequence + 1);
     }
 }
 
@@ -56,7 +56,7 @@ int searchSeqDictionary(Nucleic_Dict *nd, char *sequence)
         return 0;
     if(sequence[0] == '\0')
         return nd->end;
-    return searchSeqDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence+1);
+    return searchSeqDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence + 1);
 }
 
 
@@ -68,7 +68,7 @@ int searchNbPrefixDictionary(Nucleic_Dict *nd, char *sequence)
         return 0;
     if(sequence[0] == '\0')
         return nd->nb;
-    return searchNbPrefixDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence+1);
+    return searchNbPrefixDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence + 1);
 }
 
 

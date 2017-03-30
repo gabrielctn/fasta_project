@@ -59,7 +59,7 @@ void parseCommandLine(int argc, char *argv[], Options *args)
         }
     }
 
-    for(i=optind; i<argc; i++)
+    for(i = optind; i < argc; i++)
         printf("Non-option argument %s\n", argv[i]);
 }
 
@@ -100,42 +100,42 @@ int menu(Menu *m)
     {
     case 1:
         printf("Entrez le nom du gène: ");
-        scanf("%s",geneName);
+        scanf("%s", geneName);
         m->searchString = strdup(geneName);
         printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
-        scanf("%d",&(m->occ));
+        scanf("%d", &(m->occ));
         break;
     case 2:
         printf("Entrez la séquence (100 caractères max): ");
-        scanf("%s",searchSequence);
+        scanf("%s", searchSequence);
         m->searchString = strdup(searchSequence);
         printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
-        scanf("%d",&(m->occ));
+        scanf("%d", &(m->occ));
         break;
     case 3:
         printf("Entrez la position: ");
         scanf("%d", &(m->position));
         printf("Entrez le chromosome dans lequel il est supposé être trouvé: ");
-        scanf("%s",chromosome);
+        scanf("%s", chromosome);
         m->chromosome = str2enum(chromosome);
         printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
-        scanf("%d",&(m->occ));
+        scanf("%d", &(m->occ));
         break;
     case 4:
         printf("Entrez la séquence (100 caractères max): ");
-        scanf("%s",subSequence);
+        scanf("%s", subSequence);
         m->searchString = strdup(subSequence);
         printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
-        scanf("%d",&(m->occ));
+        scanf("%d", &(m->occ));
         break;
     case 5:
         printf("Entrez la séquence en 1 seule ligne, sans retours à la ligne (2000 caractères max): ");
-        scanf("%s",dicoSearchSeq);
+        scanf("%s", dicoSearchSeq);
         m->searchString = strdup(dicoSearchSeq);
         break;
     case 6:
         printf("Entrez le préfixe (100 caractères max): ");
-        scanf("%s",dicoPrefixSearch);
+        scanf("%s", dicoPrefixSearch);
         m->searchString = strdup(dicoPrefixSearch);
         break;
     default:
