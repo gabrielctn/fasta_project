@@ -24,11 +24,11 @@ typedef struct sequences
 
 void printSeq(Sequences *s);
 void printAllSeq(Sequences *s);
-enum chromosome_t str2enum(char * chr);
+enum chromosome_t str2enum(char *chr);
 void freeSeq(Sequences *s);
 void parseHeader(FILE *fd, Sequences *seq);
 void getSeq(FILE *fd, Sequences *seq, char *singleLine);
-Sequences * readSeq(FILE *fd);
+Sequences *readSeq(FILE *fd);
 
 
 #endif

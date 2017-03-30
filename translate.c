@@ -3,7 +3,7 @@
 
 
 
-Code * initialize()
+Code *initialize()
 {
     int i;
     Code *tab = (Code *)calloc(64, sizeof(Code));

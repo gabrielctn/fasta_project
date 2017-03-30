@@ -32,7 +32,7 @@ void printAllSeq(Sequences *s)
 }
 
 /*converti le type du chromosome dans sa valeur enum */
-enum chromosome_t str2enum(char * chr)
+enum chromosome_t str2enum(char *chr)
 {
 
     enum chromosome_t chromosome;
@@ -136,7 +136,7 @@ void getSeq(FILE *fd, Sequences *seq, char *singleLine)
 
 
 /* Parse un fichier FASTA en allouant dynamiquement une liste chaînée */
-Sequences * readSeq(FILE *fd)
+Sequences *readSeq(FILE *fd)
 {
 
     char c;
