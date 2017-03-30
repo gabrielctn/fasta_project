@@ -39,12 +39,12 @@ void parseCommandLine(int argc, char *argv[], Options *args)
     char opt;
     int i;
 
-    if(argc != 2)
+    if (argc != 2)
         display_usage();
 
-    while((opt = getopt(argc, argv, "hnp")) != -1)
+    while ((opt = getopt(argc, argv, "hnp")) != -1)
     {
-        switch(opt)
+        switch (opt)
         {
         case 'h':
             display_usage();
@@ -59,7 +59,7 @@ void parseCommandLine(int argc, char *argv[], Options *args)
         }
     }
 
-    for(i = optind; i < argc; i++)
+    for (i = optind; i < argc; i++)
         printf("Non-option argument %s\n", argv[i]);
 }
 
@@ -94,9 +94,9 @@ int menu(Menu *m)
         printf("\n\nQue voulez-vous faire ? : ");
         scanf("%d", &choice);
     }
-    while(choice < 1 && choice > 7);
+    while (choice < 1 && choice > 7);
 
-    switch(choice)
+    switch (choice)
     {
     case 1:
         printf("Entrez le nom du gène: ");

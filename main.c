@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     int choice;
 
     FILE *fd = fopen(FILENAME, "r");
-    if(fd == NULL)
+    if (fd == NULL)
         err(EXIT_FAILURE, "Erreur fopen: %s:", FILENAME);
 
 
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     do
     {
         choice = menu(m);
-        switch(choice)
+        switch (choice)
         {
         case 1:
             searchByGeneName(sequences, m->searchString, m->occ);
@@ -54,14 +54,14 @@ int main(int argc, char *argv[])
             break;
         case 5:
             printf("Recherche de la séquence \"%s\" dans le dictionnaire\n\n", m->searchString);
-            if(searchSeqDictionary(nd, m->searchString))
+            if (searchSeqDictionary(nd, m->searchString))
                 printf("Trouvé ! La séquence se trouve dans le dictionnaire\n\n");
             else
                 printf("Désolé, aucune séquence correspondante ne se trouve dans le dictionnaire\n\n");
             break;
         case 6:
             printf("Recherche du nombre de séquences commençant par \"%s\" dans le dictionnaire\n\n", m->searchString);
-            if((nbPrefix = searchNbPrefixDictionary(nd, m->searchString)))
+            if ((nbPrefix = searchNbPrefixDictionary(nd, m->searchString)))
                 printf("Il y a %d séquences dont \"%s\" est le préfix\n\n", nbPrefix, m->searchString);
             else
                 printf("Aucune séquence commence par \"%s\"\n\n", m->searchString);
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
             ;
         }
     }
-    while(choice != 7);
+    while (choice != 7);
 
     system("clear");
     printf("\nAu revoir cher bioinformaticien ...\n\n");
