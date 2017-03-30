@@ -10,14 +10,15 @@
 
 enum chromosome_t {I, II, III, MT, MTR, AB325691};
 
-typedef struct sequences {
-	char name[17]; // le nom de la sequence sans le '>' initial, termine par '\0'
-	enum chromosome_t chromosome;
-	int start; // numero de base de debut
-	int end; // et de fin
-	char *description; // copie de la chaine "description"
-	char *sequence;    // toute la sequence sur {A,C,G,T}  sans '\n' terminee par '\0'
-	struct sequences *next;  // pour faire une liste chainee. NULL si dernier.
+typedef struct sequences
+{
+    char name[17]; // le nom de la sequence sans le '>' initial, termine par '\0'
+    enum chromosome_t chromosome;
+    int start; // numero de base de debut
+    int end; // et de fin
+    char *description; // copie de la chaine "description"
+    char *sequence;    // toute la sequence sur {A,C,G,T}  sans '\n' terminee par '\0'
+    struct sequences *next;  // pour faire une liste chainee. NULL si dernier.
 } Sequences;
 
 

@@ -3,7 +3,8 @@
 
 #include "sequences.h"
 
-typedef struct nucleic_dict {
+typedef struct nucleic_dict
+{
     int nb; // nombre de séquences qui passent par ce nœud
     char end; // vaut 0 ou 1, si état final
     struct nucleic_dict * child[4];

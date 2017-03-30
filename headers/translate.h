@@ -3,8 +3,9 @@
 
 #include "search.h"
 
-typedef struct codeGenetic {
-	char codon[4]; // le codon
+typedef struct codeGenetic
+{
+    char codon[4]; // le codon
     char acid;
 } Code;
 
