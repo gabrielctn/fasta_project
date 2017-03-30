@@ -3,7 +3,7 @@
 
 #include "search.h"
 
-#define PROT_LINE_SIZE 61
+#define PROT_LINE_SIZE 60
 
 typedef struct codeGenetic {
 	char codon[4]; // le codon
