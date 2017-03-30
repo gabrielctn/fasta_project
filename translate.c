@@ -65,7 +65,6 @@ void translate(Sequences *seq){
 
                 // Si le codon est STOP on arrête de traduire la séquence
                 if(protein[k]=='Z'){
-
                     break;
                 }
                 k++;
@@ -74,11 +73,11 @@ void translate(Sequences *seq){
 
             // Commentaire suivant si la séquence a pu être traduite entièrement ou si un codon STOP est au milieu de la séquence
             if(sequence[j]=='A' ||sequence[j]=='C' ||sequence[j]=='G' ||sequence[j]=='T'){
+                fprintf(fd,"Traduction du gène %s : \n", seq->name);
                 fprintf(fd,"Attention, le codon STOP est prématuré\n");
-                fprintf(fd,"Traduction du gène %s : \n", seq->name);
             }else if(protein[k]!='Z'){
-                fprintf(fd,"Attention, il n'y a pas de codon STOP\n");
                 fprintf(fd,"Traduction du gène %s : \n", seq->name);
+                fprintf(fd,"Attention, il n'y a pas de codon STOP\n");
             }else{
                 protein[k]='\0';
                 fprintf(fd,"Traduction du gène %s : \n", seq->name);
