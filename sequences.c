@@ -10,9 +10,13 @@ void printSeq(Sequences *s)
     char *chromoName[] = {"I", "II", "III", "MT", "MTR", "AB325691"};
     printf("%s %s[%i-%i] %s", s->name, chromoName[s->chromosome], s->start, s->end, s->description);
     if ((strlen(s->sequence)) != s->end - s->start + 1)
+    {
         printf(" tronquee a %li bases\n", strlen(s->sequence));
+    }
     else
+    {
         printf("\n");
+    }
 }
 
 
@@ -37,12 +41,30 @@ enum chromosome_t str2enum(char *chr)
 
     enum chromosome_t chromosome;
 
-    if (strcmp(chr, "I") == 0) chromosome = I;
-    if (strcmp(chr, "II") == 0) chromosome = II;
-    if (strcmp(chr, "III") == 0) chromosome = III;
-    if (strcmp(chr, "MT") == 0) chromosome = MT;
-    if (strcmp(chr, "MTR") == 0) chromosome = MTR;
-    if (strcmp(chr, "AB325691") == 0) chromosome = AB325691;
+    if (strcmp(chr, "I") == 0)
+    {
+        chromosome = I;
+    }
+    if (strcmp(chr, "II") == 0)
+    {
+        chromosome = II;
+    }
+    if (strcmp(chr, "III") == 0)
+    {
+        chromosome = III;
+    }
+    if (strcmp(chr, "MT") == 0)
+    {
+        chromosome = MT;
+    }
+    if (strcmp(chr, "MTR") == 0)
+    {
+        chromosome = MTR;
+    }
+    if (strcmp(chr, "AB325691") == 0)
+    {
+        chromosome = AB325691;
+    }
 
     return chromosome;
 }
@@ -52,7 +74,10 @@ enum chromosome_t str2enum(char *chr)
 void freeSeq(Sequences *s)
 {
 
-    if (s == NULL) return;
+    if (s == NULL)
+    {
+        return;
+    }
     else
     {
         freeSeq(s->next);
@@ -116,16 +141,25 @@ void getSeq(FILE *fd, Sequences *seq, char *singleLine)
         ungetc(c, fd);
         fgets(singleLine, SEQ_LINE_SIZE + 1, fd);
         c = (char)fgetc(fd);
-        if (c != '\n') ungetc(c, fd); // Enlève le retour à la ligne
+        if (c != '\n')
+        {
+            ungetc(c, fd);    // Enlève le retour à la ligne
+        }
         newSeq = (char *) realloc(seq->sequence, strlen(seq->sequence) + strlen(singleLine) + 1);
         if (newSeq == NULL)
         {
             printf("\nError realloc\n");
             exit(EXIT_FAILURE);
         }
-        else seq->sequence = newSeq;
+        else
+        {
+            seq->sequence = newSeq;
+        }
         strcat(seq->sequence, singleLine);
-        if (seq->sequence[strlen(seq->sequence) - 1] == '\n') seq->sequence[strlen(seq->sequence) - 1] = '\0';
+        if (seq->sequence[strlen(seq->sequence) - 1] == '\n')
+        {
+            seq->sequence[strlen(seq->sequence) - 1] = '\0';
+        }
         c = (char)fgetc(fd); // Vérifie si la ligne suivante est un nouvel entête ou la suite de la séquence
     }
     while (c != '>' && !feof(fd));
@@ -146,15 +180,24 @@ Sequences *readSeq(FILE *fd)
     Sequences *seq = (Sequences *) malloc(sizeof(Sequences));
     seq->sequence = (char *)malloc(SEQ_LINE_SIZE + 1);
 
-    if (feof(fd)) return NULL; // Fin de fichier: fin de la liste chaînée
+    if (feof(fd))
+    {
+        return NULL;    // Fin de fichier: fin de la liste chaînée
+    }
 
     c = (char)fgetc(fd);
     if (c == '>')
     {
         parseHeader(fd, seq);
-        if (DEBUG_SEQUENCES) printf("Nom: %s\nChromosome: %d\ndebut: %d\nfin: %d\nDescription: %s\n", seq->name, seq->chromosome, seq->start, seq->end, seq->description);
+        if (DEBUG_SEQUENCES)
+        {
+            printf("Nom: %s\nChromosome: %d\ndebut: %d\nfin: %d\nDescription: %s\n", seq->name, seq->chromosome, seq->start, seq->end, seq->description);
+        }
         getSeq(fd, seq, singleLine);
-        if (DEBUG_SEQUENCES) printf("%s\n", seq->sequence);
+        if (DEBUG_SEQUENCES)
+        {
+            printf("%s\n", seq->sequence);
+        }
     }
     seq->next = readSeq(fd); // Appel récursif pour remplir la liste chaînée
 

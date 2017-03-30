@@ -7,11 +7,17 @@ bool searchByGeneName(Sequences *s, char *geneName, int occ)
     int i = 0, nbFound = 0;
 
     if (occ == 1)
+    {
         printf("\nRecherche de la 1ere occurence de séquence nucléique dans la base, dont le nom du gène est \"%s\" :\n\n", geneName);
+    }
     else if (occ == 0)
+    {
         printf("\nRecherche de toutes les séquences nucléiques dans la base, dont le nom du gène est \"%s\" :\n\n", geneName);
+    }
     else
+    {
         printf("\nRecherche des %d premières occurences de séquences nucléiques dans la base, dont le nom du gène est \"%s\" :\n\n", occ, geneName);
+    }
 
     while (s->next != NULL)
     {
@@ -20,7 +26,10 @@ bool searchByGeneName(Sequences *s, char *geneName, int occ)
         {
             printSeq(s);
             nbFound++;
-            if (occ == 1) return nbFound;
+            if (occ == 1)
+            {
+                return nbFound;
+            }
         }
         // Affiche les n séquences correspondantes
         if ((occ > 1) && (strcmp(s->name, geneName) == 0) && (i++ < occ))
@@ -32,10 +41,14 @@ bool searchByGeneName(Sequences *s, char *geneName, int occ)
     }
 
     if (nbFound < occ)
+    {
         printf("\nIl n'y a que %d occurences dans la base.\n\n", nbFound);
+    }
 
     if (nbFound == FALSE)
+    {
         printf("Désolé, aucune séquence ne correspond au gène %s\n\n", geneName);
+    }
 
     return nbFound;
 }
@@ -46,7 +59,10 @@ int searchBySequence(Sequences *seq, int occ, char *search)
     char *rep;
     int nbseq = 0;
 
-    if (seq == NULL) return 0;
+    if (seq == NULL)
+    {
+        return 0;
+    }
 
     nbseq = searchBySequence(seq->next, occ, search);
 
@@ -67,7 +83,10 @@ int searchByPosition(Sequences *seq, int occ, int position, enum chromosome_t ch
 {
     int nbseq = 0;
 
-    if (seq == NULL) return 0;
+    if (seq == NULL)
+    {
+        return 0;
+    }
 
     nbseq = searchByPosition(seq->next, occ, position, chromosome);
 

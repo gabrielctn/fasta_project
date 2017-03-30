@@ -26,7 +26,9 @@ int main(int argc, char *argv[])
 
     FILE *fd = fopen(FILENAME, "r");
     if (fd == NULL)
+    {
         err(EXIT_FAILURE, "Erreur fopen: %s:", FILENAME);
+    }
 
 
     /* Lit le fichier FASTA et rempli la structure séquences */
@@ -55,16 +57,24 @@ int main(int argc, char *argv[])
         case 5:
             printf("Recherche de la séquence \"%s\" dans le dictionnaire\n\n", m->searchString);
             if (searchSeqDictionary(nd, m->searchString))
+            {
                 printf("Trouvé ! La séquence se trouve dans le dictionnaire\n\n");
+            }
             else
+            {
                 printf("Désolé, aucune séquence correspondante ne se trouve dans le dictionnaire\n\n");
+            }
             break;
         case 6:
             printf("Recherche du nombre de séquences commençant par \"%s\" dans le dictionnaire\n\n", m->searchString);
             if ((nbPrefix = searchNbPrefixDictionary(nd, m->searchString)))
+            {
                 printf("Il y a %d séquences dont \"%s\" est le préfix\n\n", nbPrefix, m->searchString);
+            }
             else
+            {
                 printf("Aucune séquence commence par \"%s\"\n\n", m->searchString);
+            }
             break;
         default:
             ;

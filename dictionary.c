@@ -53,9 +53,13 @@ int searchSeqDictionary(Nucleic_Dict *nd, char *sequence)
 {
 
     if (nd == NULL)
+    {
         return 0;
+    }
     if (sequence[0] == '\0')
+    {
         return nd->end;
+    }
     return searchSeqDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence + 1);
 }
 
@@ -65,9 +69,13 @@ int searchNbPrefixDictionary(Nucleic_Dict *nd, char *sequence)
 {
 
     if (nd == NULL)
+    {
         return 0;
+    }
     if (sequence[0] == '\0')
+    {
         return nd->nb;
+    }
     return searchNbPrefixDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence + 1);
 }
 
@@ -77,8 +85,12 @@ void initNucleicDictionary(Nucleic_Dict *nd, Sequences *s)
 {
 
     if (s->next == NULL)
+    {
         return;
+    }
     else
+    {
         insertDictionary(nd, s->sequence);
+    }
     initNucleicDictionary(nd, s->next);
 }

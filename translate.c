@@ -9,7 +9,9 @@ Code *initialize()
     Code *tab = (Code *)calloc(64, sizeof(Code));
     FILE *fd = fopen("codegenetic.txt", "r");
     if (fd == NULL)
+    {
         err(EXIT_FAILURE, "Erreur fopen: codegenetic.txt:");
+    }
 
     for (i = 0; i < 64; i++)
     {

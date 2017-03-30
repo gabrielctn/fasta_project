@@ -40,7 +40,9 @@ void parseCommandLine(int argc, char *argv[], Options *args)
     int i;
 
     if (argc != 2)
+    {
         display_usage();
+    }
 
     while ((opt = getopt(argc, argv, "hnp")) != -1)
     {
@@ -60,7 +62,9 @@ void parseCommandLine(int argc, char *argv[], Options *args)
     }
 
     for (i = optind; i < argc; i++)
+    {
         printf("Non-option argument %s\n", argv[i]);
+    }
 }
 
 
