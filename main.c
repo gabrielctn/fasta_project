@@ -3,6 +3,9 @@
 #include "headers/start.h"
 #include "headers/dictionary.h"
 
+#define DEBUG 1
+
+extern Nucleic_Dict *tabNd;
 
 int main(int argc, char *argv[]) {
 
@@ -16,8 +19,6 @@ int main(int argc, char *argv[]) {
 	Menu *m = (Menu *) malloc(sizeof(Menu));
 	Sequences *sequences;
 
-	// Allocation du dictionnaire
-	Nucleic_Dict *nd = (Nucleic_Dict *) malloc(sizeof(Nucleic_Dict));
 
 	int nbPrefix;
 	int choice;
@@ -26,7 +27,16 @@ int main(int argc, char *argv[]) {
 
 	/* Lit le fichier FASTA et rempli la structure séquences */
 	sequences = readSeq(fd);
-	initNucleicDictionary(nd, sequences);
+	long totalLenSeq = totalLengthSequences(sequences);
+
+	if(DEBUG){
+		printf("%ld\n",totalLenSeq);
+	}
+
+	//initialise un tableau global de structures dictionnaire
+	tabNd = (Nucleic_Dict *) calloc(totalLenSeq, sizeof(Nucleic_Dict));
+
+	initNucleicDictionary(tabNd,sequences);
 
 	/* Affiche le menu et initialise la structure des variables du menu données par l'utilisateur */
 	system("clear");
@@ -47,14 +57,14 @@ int main(int argc, char *argv[]) {
 				break;
 			case 5:
 				printf("Recherche de la séquence \"%s\" dans le dictionnaire\n\n", m->searchString);
-				if(searchSeqDictionary(nd, m->searchString))
+				if(searchSeqDictionary(tabNd, m->searchString))
 					printf("Trouvé ! La séquence se trouve dans le dictionnaire\n\n");
 				else
 					printf("Désolé, aucune séquence correspondante ne se trouve dans le dictionnaire\n\n");
 				break;
 			case 6:
 				printf("Recherche du nombre de séquences commençant par \"%s\" dans le dictionnaire\n\n", m->searchString);
-				if((nbPrefix = searchNbPrefixDictionary(nd, m->searchString)))
+				if((nbPrefix = searchNbPrefixDictionary(tabNd, m->searchString)))
 					printf("Il y a %d séquences dont \"%s\" est le préfix\n\n", nbPrefix, m->searchString);
 				else
 					printf("Aucune séquence commence par \"%s\"\n\n", m->searchString);

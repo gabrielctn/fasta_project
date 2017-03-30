@@ -1,6 +1,8 @@
 #include "headers/dictionary.h"
 #include "headers/global.h"
 
+Nucleic_Dict *tabNd;
+int indexTabNd = 0;
 
 int dicoNucleicIndex(char nucleotide){
 
@@ -26,7 +28,7 @@ void insertDictionary(Nucleic_Dict *nd, char *sequence){
     else{
         index = dicoNucleicIndex(sequence[0]);
         if(nd->child[index] == NULL){
-            nd->child[index] = (Nucleic_Dict *) calloc(1, sizeof(Nucleic_Dict));
+            nd->child[index] = tabNd + (++indexTabNd);
         }
         insertDictionary(nd->child[index], sequence+1);
     }
