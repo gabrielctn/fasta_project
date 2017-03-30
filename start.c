@@ -12,7 +12,8 @@ void printMenu(){
 	printf("4. Recherche de sous-séquence\n");
 	printf("5. Recherche de séquence dans le dictionnaire\n");
 	printf("6. Recherche de séquences par préfixe dans le dictionnaire\n");
-	printf("7. Quitter\n");
+	printf("7. Traduction de séquence nucléique\n");
+	printf("8. Quitter\n");
 }
 
 
@@ -108,7 +109,7 @@ int menu(Menu *m){
 	do{
 		printf("\n\nQue voulez-vous faire ? : ");
 		scanf("%d", &choice);
-	} while(choice < 1 && choice > 7);
+	} while(choice < 1 && choice > 8);
 
 	switch(choice){
 		case 1:
@@ -150,6 +151,8 @@ int menu(Menu *m){
 			printf("Entrez le préfixe (100 caractères max): ");
 			scanf("%s",dicoPrefixSearch);
 			m->searchString = strdup(dicoPrefixSearch);
+			break;
+		case 7:
 			break;
 		default:;
 	}

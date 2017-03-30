@@ -3,6 +3,8 @@
 
 #include "search.h"
 
+#define PROT_LINE_SIZE 61
+
 typedef struct codeGenetic {
 	char codon[4]; // le codon
     char acid;

@@ -2,6 +2,7 @@
 #include "headers/search.h"
 #include "headers/start.h"
 #include "headers/dictionary.h"
+#include "headers/translate.h"
 
 #define DEBUG 1
 
@@ -69,9 +70,15 @@ int main(int argc, char *argv[]) {
 				else
 					printf("Aucune séquence commence par \"%s\"\n\n", m->searchString);
 				break;
+			case 7:
+				if(args->nucleic == TRUE)
+					translate(sequences);
+				else
+					printf("Fichier non nucléique, impossible de traduire\n");
+				break;
 			default:;
 		}
-	} while(choice != 7);
+	} while(choice != 8);
 
 	system("clear");
 	printf("\nAu revoir cher bioinformaticien ...\n\n");
