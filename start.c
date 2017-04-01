@@ -118,7 +118,7 @@ int menu(Menu *m)
         scanf("%d", &(m->occ));
         break;
     case 2:
-        printf("Entrez la séquence (100 caractères max): ");
+        printf("Entrez la séquence (1000000 caractères max): ");
         scanf("%s", searchSequence);
         m->searchString = strdup(searchSequence);
         printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
@@ -141,7 +141,7 @@ int menu(Menu *m)
         scanf("%d", &(m->occ));
         break;
     case 5:
-        printf("Entrez la séquence en 1 seule ligne, sans retours à la ligne (2000 caractères max): ");
+        printf("Entrez la séquence en 1 seule ligne, sans retours à la ligne (1000000 caractères max): ");
         scanf("%s", dicoSearchSeq);
         m->searchString = strdup(dicoSearchSeq);
         break;
