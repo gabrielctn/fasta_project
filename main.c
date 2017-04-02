@@ -8,8 +8,7 @@
 
 extern Nucleic_Dict *tabNd;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     // Allocation des arguments en ligne de commande
     Options *args = (Options *)malloc(sizeof(Options));
 

@@ -4,8 +4,7 @@
 Nucleic_Dict *tabNd;
 int indexTabNd = 0;
 
-int dicoNucleicIndex(char nucleotide)
-{
+int dicoNucleicIndex(char nucleotide) {
     switch (nucleotide) {
     case 'A':
         return 0;
@@ -25,8 +24,7 @@ int dicoNucleicIndex(char nucleotide)
     return -1;
 }
 
-void insertDictionary(Nucleic_Dict *nd, char *sequence)
-{
+void insertDictionary(Nucleic_Dict *nd, char *sequence) {
     int index;
 
     ++(nd->nb);
@@ -41,8 +39,7 @@ void insertDictionary(Nucleic_Dict *nd, char *sequence)
     }
 }
 
-int searchSeqDictionary(Nucleic_Dict *nd, char *sequence)
-{
+int searchSeqDictionary(Nucleic_Dict *nd, char *sequence) {
     if (nd == NULL) {
         return 0;
     }
@@ -52,8 +49,7 @@ int searchSeqDictionary(Nucleic_Dict *nd, char *sequence)
     return searchSeqDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence + 1);
 }
 
-int searchNbPrefixDictionary(Nucleic_Dict *nd, char *sequence)
-{
+int searchNbPrefixDictionary(Nucleic_Dict *nd, char *sequence) {
     if (nd == NULL) {
         return 0;
     }
@@ -63,8 +59,7 @@ int searchNbPrefixDictionary(Nucleic_Dict *nd, char *sequence)
     return searchNbPrefixDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence + 1);
 }
 
-void initNucleicDictionary(Nucleic_Dict *nd, Sequences *s)
-{
+void initNucleicDictionary(Nucleic_Dict *nd, Sequences *s) {
     if (s->next == NULL) {
         return;
     } else {

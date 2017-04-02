@@ -1,8 +1,7 @@
 #include "headers/search.h"
 #include "headers/global.h"
 
-bool searchByGeneName(Sequences *s, char *geneName, int occ)
-{
+bool searchByGeneName(Sequences *s, char *geneName, int occ) {
     int i = 0, nbFound = 0;
 
     if (occ == 1) {
@@ -41,8 +40,7 @@ bool searchByGeneName(Sequences *s, char *geneName, int occ)
     return nbFound;
 }
 
-int searchBySequence(Sequences *seq, int occ, char *search)
-{
+int searchBySequence(Sequences *seq, int occ, char *search) {
     char *rep;
     int nbseq = 0;
 
@@ -52,7 +50,7 @@ int searchBySequence(Sequences *seq, int occ, char *search)
 
     nbseq = searchBySequence(seq->next, occ, search);
 
-    if (nbseq < occ || occ == 0) {                                        // tant que le nombre d'occurence n'a pas été trouvé ou si occ=0
+    if (nbseq < occ || occ == 0) {                                    // tant que le nombre d'occurence n'a pas été trouvé ou si occ=0
         rep = strstr(seq->sequence, search);
         if (rep != NULL) {
             printf("La séquence recherchée a été trouvée dans la séquence %s\n", seq->name);
@@ -63,8 +61,7 @@ int searchBySequence(Sequences *seq, int occ, char *search)
 }
 
 // Nécessaire de convertir la réponse de l'utilisateur en type enum
-int searchByPosition(Sequences *seq, int occ, int position, enum chromosome_t chromosome)
-{
+int searchByPosition(Sequences *seq, int occ, int position, enum chromosome_t chromosome) {
     int nbseq = 0;
 
     if (seq == NULL) {
@@ -83,8 +80,7 @@ int searchByPosition(Sequences *seq, int occ, int position, enum chromosome_t ch
     return nbseq;
 }
 
-void searchBySubSequence(Sequences *seq, int occ, char *search)
-{
+void searchBySubSequence(Sequences *seq, int occ, char *search) {
     int i = 0, j = 0, nbseq = 0;
     size_t lengthSequence, lengthSearch = strlen(search);
 

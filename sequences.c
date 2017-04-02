@@ -4,8 +4,7 @@
 #define DEBUG_SEQUENCES 0 // Si vaut 1, la sortie peut être longue car affiche toutes les séquences fasta
 
 /* Affichage d'une sequence */
-void printSeq(Sequences *s)
-{
+void printSeq(Sequences *s) {
     char *chromoName[] = { "I", "II", "III", "MT", "MTR", "AB325691" };
 
     printf("%s %s[%i-%i] %s", s->name, chromoName[s->chromosome], s->start, s->end, s->description);
@@ -17,8 +16,7 @@ void printSeq(Sequences *s)
 }
 
 /* Affichage de toutes les sequences */
-void printAllSeq(Sequences *s)
-{
+void printAllSeq(Sequences *s) {
     if (s != NULL) {
         printAllSeq(s->next);
         printSeq(s);
@@ -29,8 +27,7 @@ void printAllSeq(Sequences *s)
 }
 
 /*converti le type du chromosome dans sa valeur enum */
-enum chromosome_t str2enum(char *chr)
-{
+enum chromosome_t str2enum(char *chr) {
     enum chromosome_t chromosome;
 
     if (strcmp(chr, "I") == 0) {
@@ -56,8 +53,7 @@ enum chromosome_t str2enum(char *chr)
 }
 
 /* Libère récursivement la liste chaînée */
-void freeSeq(Sequences *s)
-{
+void freeSeq(Sequences *s) {
     if (s == NULL) {
         return;
     } else {
@@ -69,8 +65,7 @@ void freeSeq(Sequences *s)
 }
 
 /* Parse l'entête des séquences */
-void parseHeader(FILE *fd, Sequences *seq)
-{
+void parseHeader(FILE *fd, Sequences *seq) {
     int i;
     char str[HEADER_SIZE + 1], chromosome[40];
 
@@ -104,8 +99,7 @@ void parseHeader(FILE *fd, Sequences *seq)
 }
 
 /* Récupère la séquence nucléotidique et l'enregistre dans la structure */
-void getSeq(FILE *fd, Sequences *seq, char *singleLine)
-{
+void getSeq(FILE *fd, Sequences *seq, char *singleLine) {
     char *newSeq;
     char c = (char)fgetc(fd);
 
@@ -135,8 +129,7 @@ void getSeq(FILE *fd, Sequences *seq, char *singleLine)
 }
 
 /* Parse un fichier FASTA en allouant dynamiquement une liste chaînée */
-Sequences *readSeq(FILE *fd)
-{
+Sequences *readSeq(FILE *fd) {
     char c;
     char singleLine[SEQ_LINE_SIZE + 2];
 
@@ -164,8 +157,7 @@ Sequences *readSeq(FILE *fd)
     return seq;
 }
 
-long totalLengthSequences(Sequences *seq)
-{
+long totalLengthSequences(Sequences *seq) {
     if (seq == NULL) {
         return 0;
     }

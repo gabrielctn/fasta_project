@@ -3,10 +3,10 @@
 
 #define MAX_LENGTH_GENE_NAME 20
 #define MAX_LENGTH_SEARCH_SEQUENCE 1000000
-#define MAX_LENGTH_SUB_SEQUENCE 50
+#define MAX_LENGTH_SUB_SEQUENCE 100
 #define MAX_LENGTH_CHROMOSOME 10
 #define MAX_LENGTH_DICO_SEARCH_SEQUENCE 1000000
-#define MAX_LENGTH_DICO_PREFIX_SEARCH 50
+#define MAX_LENGTH_DICO_PREFIX_SEARCH 100
 
 typedef struct menu {
     char *searchString;     // chaîne de caractères utilisée pour les recherches dans la base ou dictionnaire

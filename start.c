@@ -2,8 +2,7 @@
 #include "headers/sequences.h"
 #include "headers/start.h"
 
-void printMenu()
-{
+void printMenu() {
     printf("\n\n\n********************** Manipulation de séquences nucléiques ou protéiques **********************\n\n");
     printf("\tRECHERCHE GENERALE\n\n");
     printf("\t\t1. Par nom de gène\n");
@@ -18,8 +17,7 @@ void printMenu()
     printf("\t8. Quitter\n");
 }
 
-void display_usage()
-{
+void display_usage() {
     printf("\n\n********** USAGE **********\n\n");
     printf("./projet [-h] or [-n NUCLEIC_FILENAME] or [-p PROTEIC_FILENAME]\n\n");
 
@@ -30,8 +28,7 @@ void display_usage()
     exit(EXIT_FAILURE);
 }
 
-void parseCommandLine(int argc, char *argv[], Options *args)
-{
+void parseCommandLine(int argc, char *argv[], Options *args) {
     char opt;
     int i;
 
@@ -60,8 +57,7 @@ void parseCommandLine(int argc, char *argv[], Options *args)
     }
 }
 
-FILE *openFile(Options *args)
-{
+FILE *openFile(Options *args) {
     FILE *fd;
 
     if (args->nucleic == TRUE) {
@@ -79,21 +75,18 @@ FILE *openFile(Options *args)
     }
 }
 
-void freeMenu(Menu *m)
-{
+void freeMenu(Menu *m) {
     free(m->searchString);
     free(m);
 }
 
-void freeOpt(Options *args)
-{
+void freeOpt(Options *args) {
     free(args->nuclFile);
     free(args->protFile);
     free(args);
 }
 
-int menu(Menu *m)
-{
+int menu(Menu *m) {
     int choice;
     char geneName[MAX_LENGTH_GENE_NAME];
     char searchSequence[MAX_LENGTH_SEARCH_SEQUENCE];

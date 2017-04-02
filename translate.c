@@ -1,8 +1,7 @@
 #include "headers/translate.h"
 #include "headers/global.h"
 
-Code *initialize()
-{
+Code *initialize() {
     int i;
     Code *tab = (Code *)calloc(64, sizeof(Code));
     FILE *fd  = fopen("codegenetic.txt", "r");
@@ -17,8 +16,7 @@ Code *initialize()
     return tab;
 }
 
-void compare(char *protein, char *tmp, Code *tab, int k)
-{
+void compare(char *protein, char *tmp, Code *tab, int k) {
     int i;
 
     for (i = 0; i < 64; i++) {
@@ -30,8 +28,7 @@ void compare(char *protein, char *tmp, Code *tab, int k)
     protein[k] = '?';
 }
 
-void translate(Sequences *seq)
-{
+void translate(Sequences *seq) {
     // Création du fichier de sortie pour la traduction
     FILE *fd;
 
