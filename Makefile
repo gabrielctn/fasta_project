@@ -1,7 +1,7 @@
 .PHONY: clean wipeout
 
 EXEC = projet_fasta
-C_FLAGS = -Wall -g
+C_FLAGS = -Wall -Wextra -g
 CC = gcc $(C_FLAGS)
 
 SRC = $(wildcard *.c)
