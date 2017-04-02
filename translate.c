@@ -60,14 +60,6 @@ void compare(char *protein, char *tmp, Code *tab, int k) {
     protein[k] = '?';
 }
 
-void freeCode(Code *tab) {
-    int i;
-
-    for (i = 0; i < 64; i++) {
-        free(&tab[i]);
-    }
-}
-
 void translate(Sequences *seq, Menu *m) {
     // Création du fichier de sortie pour la traduction
     FILE *fd = NULL;

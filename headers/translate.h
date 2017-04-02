@@ -12,6 +12,8 @@ typedef struct codeGenetic {
 } Code;
 
 Code  *initialize();
+int isARN(char *sequence);
+char * transcription(char *sequence);
 void compare(char *protein, char *tmp, Code *tab, int k);
 void translate(Sequences *seq, Menu *m);
 
