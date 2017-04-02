@@ -84,8 +84,7 @@ void translate(Sequences *seq, Menu *m) {
     }
 
     while (seq != NULL) {
-        char  *sequence;
-        char  *protein = NULL;
+        char *sequence;
         int i, j = 0, k = 0;
         size_t a;
 
