@@ -133,14 +133,15 @@ Sequences *readSeq(FILE *fd) {
     char c;
     char singleLine[SEQ_LINE_SIZE + 2];
 
+    if (feof(fd)) {
+        return NULL;              // Fin de fichier: fin de la liste chaînée
+    }
+
     // Allocations dynamiques
     Sequences *seq = (Sequences *)malloc(sizeof(Sequences));
 
     seq->sequence = (char *)malloc(SEQ_LINE_SIZE + 1);
 
-    if (feof(fd)) {
-        return NULL;              // Fin de fichier: fin de la liste chaînée
-    }
     c = (char)fgetc(fd);
     if (c == '>') {
         parseHeader(fd, seq);
