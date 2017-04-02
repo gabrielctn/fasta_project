@@ -6,9 +6,10 @@
 /* Affichage d'une sequence */
 void printSeq(Sequences *s) {
     char *chromoName[] = { "I", "II", "III", "MT", "MTR", "AB325691" };
+    size_t size = s->end - s->start + 1;
 
     printf("%s %s[%i-%i] %s", s->name, chromoName[s->chromosome], s->start, s->end, s->description);
-    if ((strlen(s->sequence)) != s->end - s->start + 1) {
+    if (strlen(s->sequence) != size) {
         printf(" tronquee a %li bases\n", strlen(s->sequence));
     } else {
         printf("\n");
@@ -86,15 +87,15 @@ void parseHeader(FILE *fd, Sequences *seq) {
 
     // parse l'entête
     strtok(NULL, "\"");
-    seq->description = (char *)malloc(DESCRIPTION_SIZE + 1);
+    seq->description = (char *)calloc(DESCRIPTION_SIZE + 1, sizeof(char));
     strcpy(seq->description, strtok(NULL, "\""));
 
     // parse le champ "chromosome"
     strtok(chromosome, ":");
     strtok(NULL, ":");
     seq->chromosome = str2enum(strtok(NULL, ":"));    // type
-    seq->start      = atoi(strtok(NULL, ":")); // debut
-    seq->end        = atoi(strtok(NULL, ":")); // fin
+    seq->start = atoi(strtok(NULL, ":"));    // debut
+    seq->end = atoi(strtok(NULL, ":"));    // fin
     strtok(NULL, ":");
 }
 
@@ -133,14 +134,15 @@ Sequences *readSeq(FILE *fd) {
     char c;
     char singleLine[SEQ_LINE_SIZE + 2];
 
-    // Allocations dynamiques
-    Sequences *seq = (Sequences *)malloc(sizeof(Sequences));
-
-    seq->sequence = (char *)malloc(SEQ_LINE_SIZE + 1);
-
     if (feof(fd)) {
         return NULL;              // Fin de fichier: fin de la liste chaînée
     }
+
+    // Allocations dynamiques
+    Sequences *seq = (Sequences *)calloc(1, sizeof(Sequences));
+
+    seq->sequence = (char *)calloc(SEQ_LINE_SIZE + 1, sizeof(char));
+
     c = (char)fgetc(fd);
     if (c == '>') {
         parseHeader(fd, seq);
