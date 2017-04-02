@@ -50,3 +50,5 @@ Module.symvers
 Mkfile.old
 dkms.conf
 /projet_fasta
+
+data/translation\.txt
