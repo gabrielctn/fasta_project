@@ -4,7 +4,7 @@
 Code *initialize() {
     int i;
     Code *tab = (Code *)calloc(64, sizeof(Code));
-    FILE *fd  = fopen("codegenetic.txt", "r");
+    FILE *fd = fopen("codegenetic.txt", "r");
 
     if (fd == NULL) {
         err(EXIT_FAILURE, "Erreur fopen: codegenetic.txt:");
@@ -28,17 +28,28 @@ void compare(char *protein, char *tmp, Code *tab, int k) {
     protein[k] = '?';
 }
 
-void translate(Sequences *seq) {
+void translate(Sequences *seq, Menu *m) {
     // Création du fichier de sortie pour la traduction
-    FILE *fd;
+    FILE *fd = NULL;
+    int nbOcc = 0;
 
     fd = fopen("data/translation.txt", "w");
+
     if (fd == NULL) {
         err(EXIT_FAILURE, "Erreur fopen: translation.txt:");
     }
 
     Code *tab = initialize();
     char tmp[4];
+    char *protein = NULL;
+
+    if (m->occ == 0) {
+        printf("\nTraduction de toutes les séquences du fichier FASTA\n\n");
+    } else if (m->occ == 1) {
+        printf("\nTraduction de la première séquence du fichier FASTA\n\n");
+    } else {
+        printf("\nTraduction des %d premières séquences du fichier FASTA\n\n", m->occ);
+    }
 
     while (seq != NULL) {
         char *sequence;
@@ -47,7 +58,7 @@ void translate(Sequences *seq) {
 
         sequence = strstr(seq->sequence, "ATG");       // Recherche du codon initiateur et renvoie la séquence à traduire
         if (sequence != NULL) {
-            char *protein = (char *)malloc(1);
+            protein = (char *)calloc(1, sizeof(char));
             do {
                 for (i = 0; i < 3; i++) {                   // On récupère le codon de la séquence
                     // Pour les ARNm le T est remplacé par un U mais il a les même propriétés que le T, on remplace donc le U par le T pour faciliter la traduction
@@ -86,8 +97,17 @@ void translate(Sequences *seq) {
                 fputc(protein[a], fd);
             }
             fputs("\n\n", fd);
+            free(protein);
         }
         seq = seq->next;
+        ++nbOcc;
+        if (nbOcc == m->occ) {
+            break;
+        }
     }
+
+    printf("Les séquences ont bien été traduites!\n\n");
+
     fclose(fd);
+    free(tab);
 }

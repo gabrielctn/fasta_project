@@ -10,15 +10,15 @@ extern Nucleic_Dict *tabNd;
 
 int main(int argc, char *argv[]) {
     // Allocation des arguments en ligne de commande
-    Options *args = (Options *)malloc(sizeof(Options));
+    Options *args = (Options *)calloc(1, sizeof(Options));
 
     args->nucleic = FALSE;
     args->proteic = FALSE;
     parseCommandLine(argc, argv, args);
 
     // Allocation de la structure contenant les variables du menu
-    Menu *m = (Menu *)malloc(sizeof(Menu));
-    Sequences *sequences;
+    Menu *m              = (Menu *)calloc(1, sizeof(Menu));
+    Sequences *sequences = NULL;
 
     int nbPrefix;
     int choice;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
             break;
         case 7:
             if (args->nucleic == TRUE) {
-                translate(sequences);
+                translate(sequences, m);
             } else {
                 printf("Fichier non nucléique, impossible de traduire\n");
             }
@@ -91,6 +91,7 @@ int main(int argc, char *argv[]) {
     freeSeq(sequences);
     freeMenu(m);
     freeOpt(args);
+    free(tabNd);
 
     fclose(fd);
 

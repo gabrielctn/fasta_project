@@ -2,6 +2,7 @@
 #define TRANSLATE_H
 
 #include "search.h"
+#include "start.h"
 
 #define PROT_LINE_SIZE 60
 
@@ -12,6 +13,6 @@ typedef struct codeGenetic {
 
 Code  *initialize();
 void compare(char *protein, char *tmp, Code *tab, int k);
-void translate(Sequences *seq);
+void translate(Sequences *seq, Menu *m);
 
 #endif

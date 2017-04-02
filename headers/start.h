@@ -9,6 +9,7 @@
 #define MAX_LENGTH_DICO_PREFIX_SEARCH 100
 
 typedef struct menu {
+    char codingSeq;
     char *searchString;     // chaîne de caractères utilisée pour les recherches dans la base ou dictionnaire
     enum chromosome_t chromosome;     // nom du chromosome pour compléter la recherche par position
     int position;     // recherche de séquences par position dans le génome
