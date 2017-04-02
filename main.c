@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     parseCommandLine(argc, argv, args);
 
     // Allocation de la structure contenant les variables du menu
-    Menu *m              = (Menu *)calloc(1, sizeof(Menu));
+    Menu *m = (Menu *)calloc(1, sizeof(Menu));
     Sequences *sequences = NULL;
 
     int nbPrefix;
