@@ -81,7 +81,8 @@ int searchByPosition(Sequences *seq, int occ, int position, enum chromosome_t ch
 }
 
 void searchBySubSequence(Sequences *seq, int occ, char *search) {
-    int i = 0, j = 0, nbseq = 0;
+    size_t i = 0, j = 0;
+    int nbseq = 0;
     size_t lengthSequence, lengthSearch = strlen(search);
 
     printf("Recherche de la sous-séquence \"%s\" dans la base:\n\n", search);
@@ -100,8 +101,8 @@ void searchBySubSequence(Sequences *seq, int occ, char *search) {
             printSeq(seq);
         }
         seq = seq->next;
-        i   = 0;
-        j   = 0;
+        i = 0;
+        j = 0;
     }
 
     if (nbseq == 0) {
