@@ -41,11 +41,11 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
         case 'h':
             display_usage();
         case 'n':
-            args->nucleic  = TRUE;
+            args->nucleic = TRUE;
             args->nuclFile = strdup(optarg);
             break;
         case 'p':
-            args->proteic  = TRUE;
+            args->proteic = TRUE;
             args->protFile = strdup(optarg);
             break;
         default:
@@ -111,7 +111,7 @@ int menu(Menu *m) {
         scanf("%d", &(m->occ));
         break;
     case 2:
-        printf("Entrez la séquence (1000000 caractères max): ");
+        printf("Entrez la séquence en 1 seule ligne, sans retours à la ligne (1000000 caractères max): ");
         scanf("%s", searchSequence);
         m->searchString = strdup(searchSequence);
         printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
