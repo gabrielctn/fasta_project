@@ -4,7 +4,7 @@
 Code *initialize() {
     int i;
     Code *tab = (Code *)calloc(64, sizeof(Code));
-    FILE *fd = fopen("codegenetic.txt", "r");
+    FILE *fd = fopen("data/codegenetic.txt", "r");
 
     if (fd == NULL) {
         err(EXIT_FAILURE, "Erreur fopen: codegenetic.txt:");
