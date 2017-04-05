@@ -127,10 +127,13 @@ void translate(Sequences *seq, Menu *m) {
             sequence = strstr(seq->sequence, codon);
         }
 
+        // Si on a bien trouvé un codon initiateur
         if (sequence != NULL) {
             protein = (char *)calloc(1, sizeof(char));
             do {
-                for (i = 0; i < 3; i++) {                   // On récupère le codon de la séquence
+                // On récupère le codon de la séquence
+                for (i = 0; i < 3; i++) {
+                    // Si la séquence donnée est codante, on traduit directement de l'ADN, il faut donc changer les T en U pour la lecture des codons dans le code génétique
                     tmp[i] = (sequence[j] == 'T') ? 'U' : sequence[j];
                     j++;
                 }
@@ -145,7 +148,9 @@ void translate(Sequences *seq, Menu *m) {
                 protein = (char *)realloc(protein, k + 2);
 
                 k++;
-            } while (sequence[j] == 'A' || sequence[j] == 'C' || sequence[j] == 'G' || sequence[j] == 'U' || sequence[j] == 'T');       // Tant que la séquence n'est pas finie
+
+                // Tant que la séquence n'est pas finie, il existe des bases
+            } while (sequence[j] == 'A' || sequence[j] == 'C' || sequence[j] == 'G' || sequence[j] == 'U' || sequence[j] == 'T');
 
             printing(sequence, j, protein, k, seq->name, fd);
             free(protein);
