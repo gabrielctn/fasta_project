@@ -13,6 +13,7 @@ Code *initialize() {
     for (i = 0; i < 64; i++) {
         fscanf(fd, "%c %s\n", &(tab[i].acid), tab[i].codon);
     }
+    fclose(fd);
     return tab;
 }
 
@@ -56,14 +57,6 @@ void compare(char *protein, char *tmp, Code *tab, int k) {
         }
     }
     protein[k] = '?';
-}
-
-void freeCode(Code *tab) {
-    int i;
-
-    for (i = 0; i < 64; i++) {
-        free(&tab[i]);
-    }
 }
 
 void translate(Sequences *seq) {
@@ -135,6 +128,5 @@ void translate(Sequences *seq) {
         free(sequence);
     }
     fclose(fd);
-    // freeCode(tab);
     free(tab);
 }
