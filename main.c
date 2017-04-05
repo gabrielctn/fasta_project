@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 
     // Allocation de la structure contenant les variables du menu
     Menu *m = (Menu *)calloc(1, sizeof(Menu));
-    Sequences *sequences;
+    Sequences *sequences = NULL;
 
     int nbPrefix;
     int choice;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
             break;
         case 7:
             if (args->nucleic == TRUE) {
-                translate(sequences);
+                translate(sequences, m);
             } else {
                 printf("Fichier non nucléique, impossible de traduire\n");
             }

@@ -41,11 +41,11 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
         case 'h':
             display_usage();
         case 'n':
-            args->nucleic  = TRUE;
+            args->nucleic = TRUE;
             args->nuclFile = strdup(optarg);
             break;
         case 'p':
-            args->proteic  = TRUE;
+            args->proteic = TRUE;
             args->protFile = strdup(optarg);
             break;
         default:
@@ -107,14 +107,14 @@ int menu(Menu *m) {
         printf("Entrez le nom du gène: ");
         scanf("%s", geneName);
         m->searchString = strdup(geneName);
-        printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+        printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
         break;
     case 2:
-        printf("Entrez la séquence (1000000 caractères max): ");
+        printf("Entrez la séquence en 1 seule ligne, sans retours à la ligne (1000000 caractères max): ");
         scanf("%s", searchSequence);
         m->searchString = strdup(searchSequence);
-        printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+        printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
         break;
     case 3:
@@ -123,14 +123,14 @@ int menu(Menu *m) {
         printf("Entrez le chromosome dans lequel il est supposé être trouvé: ");
         scanf("%s", chromosome);
         m->chromosome = str2enum(chromosome);
-        printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+        printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
         break;
     case 4:
         printf("Entrez la séquence (100 caractères max): ");
         scanf("%s", subSequence);
         m->searchString = strdup(subSequence);
-        printf("Entrez le nombre d'occurences accepté, toutes (0), 1 ou n : ");
+        printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
         break;
     case 5:
@@ -144,6 +144,10 @@ int menu(Menu *m) {
         m->searchString = strdup(dicoPrefixSearch);
         break;
     case 7:
+        printf("Les séquences sont-elles codantes? (o/n): ");
+        scanf(" %c", &(m->codingSeq));
+        printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
+        scanf("%d", &(m->occ));
         break;
     default:
         ;

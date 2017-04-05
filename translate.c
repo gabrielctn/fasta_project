@@ -4,7 +4,7 @@
 Code *initialize() {
     int i;
     Code *tab = (Code *)calloc(64, sizeof(Code));
-    FILE *fd  = fopen("codegenetic.txt", "r");
+    FILE *fd = fopen("codegenetic.txt", "r");
 
     if (fd == NULL) {
         err(EXIT_FAILURE, "Erreur fopen: codegenetic.txt:");
@@ -14,6 +14,7 @@ Code *initialize() {
         fscanf(fd, "%c %s\n", &(tab[i].acid), tab[i].codon);
     }
     fclose(fd);
+
     return tab;
 }
 
@@ -28,7 +29,7 @@ char *transcription(char *sequence) {
     size_t seq_length, i;
 
     seq_length = strlen(sequence);
-    char *inversion = (char *)malloc(seq_length + 1);
+    char *inversion = (char *)calloc(seq_length + 1, sizeof(char));
 
     // Transcription: l'ADN est transformé en ARN pour pouvoir être traduite
     // Les T deviennent des A et les C des G et inversement
@@ -59,54 +60,71 @@ void compare(char *protein, char *tmp, Code *tab, int k) {
     protein[k] = '?';
 }
 
-void translate(Sequences *seq) {
+void translate(Sequences *seq, Menu *m) {
     // Création du fichier de sortie pour la traduction
-    FILE *fd;
+    FILE *fd = NULL;
+    int nbOcc = 0;
 
     fd = fopen("data/translation.txt", "w");
+
     if (fd == NULL) {
         err(EXIT_FAILURE, "Erreur fopen: translation.txt:");
     }
 
     Code *tab = initialize();
     char tmp[4];
+    char *protein = NULL;
+
+    if (m->occ == 0) {
+        printf("\nTraduction de toutes les séquences du fichier FASTA\n\n");
+    } else if (m->occ == 1) {
+        printf("\nTraduction de la première séquence du fichier FASTA\n\n");
+    } else {
+        printf("\nTraduction des %d premières séquences du fichier FASTA\n\n", m->occ);
+    }
 
     while (seq != NULL) {
         char *sequence;
         int i, j = 0, k = 0;
         size_t a;
 
-        if (isARN(seq->sequence) == 0) {
+        if (m->codingSeq == 'n' && isARN(seq->sequence) == 0) {
             char *ARN;
             // Trancription de la séquence ADN en ARN pour ensuite la traduire
-            ARN = strdup(transcription(seq->sequence));
+            char *reverse = transcription(seq->sequence);
+            ARN = strdup(reverse);
 
             sequence = strstr(ARN, "AUG");
+            free(ARN);
+            free(reverse);
         } else {
+            char *codon = (m->codingSeq == 'o') ? "ATG" : "AUG";
             // Recherche du codon initiateur et renvoie la séquence à traduire
-            sequence = strstr(seq->sequence, "AUG");
+            sequence = strstr(seq->sequence, codon);
         }
 
         if (sequence != NULL) {
-            char *protein = (char *)malloc(1);
+            protein = (char *)calloc(1, sizeof(char));
             do {
                 for (i = 0; i < 3; i++) {                   // On récupère le codon de la séquence
-                    tmp[i] = sequence[j];
+                    tmp[i] = (sequence[j] == 'T') ? 'U' : sequence[j];
                     j++;
                 }
                 tmp[3] = '\0';
                 compare(protein, tmp, tab, k);
-                protein = (char *)realloc(protein, k + 2);
 
                 // Si le codon est STOP , représenté par *, on arrête de traduire la séquence
                 if (protein[k] == '*') {
                     break;
                 }
+
+                protein = (char *)realloc(protein, k + 2);
+
                 k++;
-            } while (sequence[j] == 'A' || sequence[j] == 'C' || sequence[j] == 'G' || sequence[j] == 'U');      // Tant que la séquence n'est pas finie
+            } while (sequence[j] == 'A' || sequence[j] == 'C' || sequence[j] == 'G' || sequence[j] == 'U' || sequence[j] == 'T');       // Tant que la séquence n'est pas finie
 
             // Commentaire suivant si la séquence a pu être traduite entièrement ou si un codon STOP est au milieu de la séquence
-            if (sequence[j] == 'A' || sequence[j] == 'C' || sequence[j] == 'G' || sequence[j] == 'U') {
+            if (sequence[j] == 'A' || sequence[j] == 'C' || sequence[j] == 'G' || sequence[j] == 'U' || sequence[j] == 'T') {
                 fprintf(fd, "Traduction du gène %s : \n", seq->name);
                 fprintf(fd, "Attention, le codon STOP est prématuré\n");
             } else if (protein[k] != '*') {
@@ -115,18 +133,28 @@ void translate(Sequences *seq) {
             } else {
                 fprintf(fd, "Traduction du gène %s : \n", seq->name);
             }
-            for (a = 0; a < strlen(protein); a++) {
+            for (a = 0; a < strlen(protein) && protein[a] != '*'; a++) {
                 if (a % PROT_LINE_SIZE == 0 && a != 0) {
                     fputs("\n", fd);
                 }
                 fputc(protein[a], fd);
             }
+            if (protein[a] == '*') {
+                fputs("*", fd);
+            }
             fputs("\n\n", fd);
             free(protein);
         }
         seq = seq->next;
-        free(sequence);
+        ++nbOcc;
+        if (nbOcc == m->occ) {
+            break;
+        }
     }
+
+    printf("Les séquences ont bien été traduites!\n\n");
+
+    free(tab);
     fclose(fd);
     free(tab);
 }
