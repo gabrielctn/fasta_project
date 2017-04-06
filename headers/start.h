@@ -31,6 +31,5 @@ void freeOpt(Options *args);
 void display_usage();
 void parseCommandLine(int argc, char *argv[], Options *args);
 FILE *openFile(Options *args);
-int setTerminalMode(int mode);
 
 #endif

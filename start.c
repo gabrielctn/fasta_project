@@ -2,32 +2,6 @@
 #include "headers/sequences.h"
 #include "headers/start.h"
 
-#define CANONICAL 0
-#define NON_CANONICAL 1
-
-/* En mode non-canonical, le terminal accepte en entrée une chaîne > 4095 caractères */
-void setTerminalMode(int mode) {
-    struct termios settings;
-    int parameters;
-
-    parameters = tcgetattr(STDIN_FILENO, &settings);
-    if (parameters < 0) {
-        err(EXIT_FAILURE, "error in tcgetattr: cannot retrieve terminal's settings\n\n");
-    }
-
-    if (mode) {
-        settings.c_lflag &= ~ICANON; // disable canonical mode
-    } else {
-        settings.c_lflag |= ICANON; // enable canonical mode
-    }
-
-    parameters = tcsetattr(STDIN_FILENO, TCSANOW, &settings);
-
-    if (parameters < 0) {
-        err(EXIT_FAILURE, "error in tcsetattr: cannot change terminal's mode\n\n");
-    }
-}
-
 void printMenu() {
     printf("\n\n\n********************** Manipulation de séquences nucléiques ou protéiques **********************\n\n");
     printf("\tRECHERCHE GENERALE\n\n");
@@ -138,12 +112,8 @@ int menu(Menu *m) {
         break;
     case 2:
         printf("Entrez la séquence en 1 seule ligne, sans retours à la ligne (1000000 caractères max): ");
-        /* Change le mode d'entrée du terminal de canonical à non-canonical
-         * pour accepter l'entrée de plus de 4095 bits */
-        setTerminalMode(NON_CANONICAL);
         scanf("%s", searchSequence);
         m->searchString = strdup(searchSequence);
-        setTerminalMode(CANONICAL);
         printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
         break;
@@ -165,12 +135,8 @@ int menu(Menu *m) {
         break;
     case 5:
         printf("Entrez la séquence en 1 seule ligne, sans retours à la ligne (1000000 caractères max): ");
-        /* Change le mode d'entrée du terminal de canonical à non-canonical
-         * pour accepter l'entrée de plus de 4095 bits */
-        setTerminalMode(NON_CANONICAL);
         scanf("%s", dicoSearchSeq);
         m->searchString = strdup(dicoSearchSeq);
-        setTerminalMode(CANONICAL);
         break;
     case 6:
         printf("Entrez le préfixe (100 caractères max): ");

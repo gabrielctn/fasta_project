@@ -84,14 +84,19 @@ void translate(Sequences *seq, Menu *m) {
     }
 
     while (seq != NULL) {
-        char *sequence, *ARNm;
+        char *sequence;
         int i, j = 0, k = 0;
         size_t a;
 
         if (m->codingSeq == 'n' && isARN(seq->sequence) == 0) {
+            char *ARN;
             // Trancription de la séquence ADN en ARN pour ensuite la traduire
-            ARNm = transcription(seq->sequence);
-            sequence = strstr(ARNm, "AUG");
+            char *reverse = transcription(seq->sequence);
+            ARN = strdup(reverse);
+
+            sequence = strstr(ARN, "AUG");
+            free(ARN);
+            free(reverse);
         } else {
             char *codon = (m->codingSeq == 'o') ? "ATG" : "AUG";
             // Recherche du codon initiateur et renvoie la séquence à traduire
@@ -140,7 +145,6 @@ void translate(Sequences *seq, Menu *m) {
             fputs("\n\n", fd);
             free(protein);
         }
-        free(ARNm);
         seq = seq->next;
         ++nbOcc;
         if (nbOcc == m->occ) {
