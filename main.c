@@ -5,6 +5,7 @@
 #include "headers/translate.h"
 
 #define DEBUG 0
+#define CLEARSCR() printf("\033[H\033[2J");
 
 extern Nucleic_Dict *tabNd;
 
@@ -39,10 +40,10 @@ int main(int argc, char *argv[]) {
     initNucleicDictionary(tabNd, sequences);
 
     /* Affiche le menu et initialise la structure des variables du menu données par l'utilisateur */
-    system("clear");
+    CLEARSCR();
     do {
         choice = menu(m);
-        system("clear");
+        CLEARSCR();
         switch (choice) {
         case 1:
             searchByGeneName(sequences, m->searchString, m->occ);
