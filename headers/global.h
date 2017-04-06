@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <err.h>
+#include <termios.h>
 
 #define EXIT_FAILURE 1
 
