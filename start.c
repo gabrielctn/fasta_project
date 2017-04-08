@@ -43,7 +43,7 @@ void printMenu() {
     printf("\t8. Quitter\n");
 }
 
-void display_usage() {
+void displayUsage() {
     printf("\n\n********** USAGE **********\n\n");
     printf("./projet [-h] or [-n NUCLEIC_FILENAME] or [-p PROTEIC_FILENAME]\n\n");
 
@@ -59,13 +59,13 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
     int i;
 
     if (argc <= 1) {
-        display_usage();
+        displayUsage();
     }
 
     while ((opt = getopt(argc, argv, "hn:p:")) != -1)
         switch (opt) {
         case 'h':
-            display_usage();
+            displayUsage();
         case 'n':
             args->nucleic = TRUE;
             args->nuclFile = strdup(optarg);

@@ -21,7 +21,7 @@ void printMenu();
 int menu(Menu *m);
 void freeMenu(Menu *m);
 void freeOpt(Options *args);
-void display_usage();
+void displayUsage();
 void parseCommandLine(int argc, char *argv[], Options *args);
 FILE *openFile(Options *args);
 void setTerminalMode(int mode);
