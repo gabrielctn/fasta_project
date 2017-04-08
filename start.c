@@ -112,14 +112,31 @@ void freeOpt(Options *args) {
     free(args);
 }
 
+char *getSring() {
+    char *tmpLine;
+    char c;
+    int i = 0;
+    char *line = (char *)calloc(1, sizeof(char));
+    if (NULL == line) {
+        err(EXIT_FAILURE, "Erreur avec calloc de line\n");
+    }
+    __fpurge(stdin); // vide le buffer
+    while ((c = (char)getchar()) != '\n') {
+        line[i++] = c;
+        tmpLine = (char *)realloc(line, i + 1);
+        if (NULL == tmpLine) {
+            err(EXIT_FAILURE, "Erreur realloc getSequence\n");
+        } else {
+            line = tmpLine;
+        }
+    }
+    line[i] = '\0';
+
+    return line;
+}
+
 int menu(Menu *m) {
     int choice;
-    char geneName[MAX_LENGTH_GENE_NAME];
-    char searchSequence[MAX_LENGTH_SEARCH_SEQUENCE];
-    char chromosome[MAX_LENGTH_CHROMOSOME];
-    char subSequence[MAX_LENGTH_SUB_SEQUENCE];
-    char dicoSearchSeq[MAX_LENGTH_DICO_SEARCH_SEQUENCE];
-    char dicoPrefixSearch[MAX_LENGTH_DICO_PREFIX_SEARCH];
 
     printMenu();
 
@@ -131,18 +148,20 @@ int menu(Menu *m) {
     switch (choice) {
     case 1:
         printf("Entrez le nom du gène: ");
-        scanf("%s", geneName);
+        char *geneName = getSring();
         m->searchString = strdup(geneName);
+        free(geneName);
         printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
         break;
     case 2:
-        printf("Entrez la séquence en 1 seule ligne, sans retours à la ligne (1000000 caractères max): ");
+        printf("Entrez la séquence en 1 seule ligne, *** sans retours à la ligne ***: ");
         /* Change le mode d'entrée du terminal de canonical à non-canonical
          * pour accepter l'entrée de plus de 4095 bits */
         setTerminalMode(NON_CANONICAL);
-        scanf("%s", searchSequence);
+        char *searchSequence = getSring();
         m->searchString = strdup(searchSequence);
+        free(searchSequence);
         setTerminalMode(CANONICAL);
         printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
@@ -151,31 +170,35 @@ int menu(Menu *m) {
         printf("Entrez la position: ");
         scanf("%d", &(m->position));
         printf("Entrez le chromosome dans lequel il est supposé être trouvé: ");
-        scanf("%s", chromosome);
+        char *chromosome = getSring();
         m->chromosome = str2enum(chromosome);
+        free(chromosome);
         printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
         break;
     case 4:
-        printf("Entrez la séquence (100 caractères max): ");
-        scanf("%s", subSequence);
+        printf("Entrez la sous-séquence: ");
+        char *subSequence = getSring();
         m->searchString = strdup(subSequence);
+        free(subSequence);
         printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
         break;
     case 5:
-        printf("Entrez la séquence en 1 seule ligne, sans retours à la ligne (1000000 caractères max): ");
+        printf("Entrez la séquence en 1 seule ligne, *** sans retours à la ligne ***: ");
         /* Change le mode d'entrée du terminal de canonical à non-canonical
          * pour accepter l'entrée de plus de 4095 bits */
         setTerminalMode(NON_CANONICAL);
-        scanf("%s", dicoSearchSeq);
+        char *dicoSearchSeq = getSring();
         m->searchString = strdup(dicoSearchSeq);
+        free(dicoSearchSeq);
         setTerminalMode(CANONICAL);
         break;
     case 6:
-        printf("Entrez le préfixe (100 caractères max): ");
-        scanf("%s", dicoPrefixSearch);
+        printf("Entrez le préfixe: ");
+        char *dicoPrefixSearch = getSring();
         m->searchString = strdup(dicoPrefixSearch);
+        free(dicoPrefixSearch);
         break;
     case 7:
         printf("Les séquences sont-elles codantes? (o/n): ");
