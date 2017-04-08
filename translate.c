@@ -4,6 +4,9 @@
 Code *initialize() {
     int i;
     Code *tab = (Code *)calloc(64, sizeof(Code));
+    if (NULL == tab) {
+        err(EXIT_FAILURE, "Erreur avec calloc de Code\n");
+    }
     FILE *fd = fopen("data/codegenetic.txt", "r");
 
     if (fd == NULL) {
@@ -30,6 +33,9 @@ char *transcription(char *sequence) {
 
     seq_length = strlen(sequence);
     char *inversion = (char *)calloc(seq_length + 1, sizeof(char));
+    if (NULL == inversion) {
+        err(EXIT_FAILURE, "Erreur avec calloc de inversion\n");
+    }
 
     // Transcription: l'ADN est transformé en ARN pour pouvoir être traduite
     // Les T deviennent des A et les C des G et inversement
@@ -112,6 +118,10 @@ char *synthetizeProtein(int seq_idx, int prot_idx, char *sequence, Code *tab) {
     int i;
     char tmp[4];
     char *protein = (char *)calloc(2, sizeof(char));
+
+    if (NULL == protein) {
+        err(EXIT_FAILURE, "Erreur avec calloc de protein\n");
+    }
 
     do {
         // On récupère le codon de la séquence

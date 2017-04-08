@@ -10,19 +10,23 @@
 extern Nucleic_Dict *tabNd;
 
 int main(int argc, char *argv[]) {
-    // Allocation des arguments en ligne de commande
+    /* Allocation des arguments en ligne de commande
+     * et de la structure contenant les variables du menu */
     Options *args = (Options *)calloc(1, sizeof(Options));
+    if (NULL == args) {
+        err(EXIT_FAILURE, "Erreur avec calloc de Options\n");
+    }
+    Menu *m = (Menu *)calloc(1, sizeof(Menu));
+    if (NULL == m) {
+        err(EXIT_FAILURE, "Erreur avec calloc de Menu\n");
+    }
+    Sequences *sequences = NULL;
+    int nbPrefix;
+    int choice;
 
     args->nucleic = FALSE;
     args->proteic = FALSE;
     parseCommandLine(argc, argv, args);
-
-    // Allocation de la structure contenant les variables du menu
-    Menu *m = (Menu *)calloc(1, sizeof(Menu));
-    Sequences *sequences = NULL;
-
-    int nbPrefix;
-    int choice;
 
     FILE *fd = openFile(args);
 
@@ -36,6 +40,9 @@ int main(int argc, char *argv[]) {
 
     // initialise un tableau global de structures dictionnaire
     tabNd = (Nucleic_Dict *)calloc(totalLenSeq, sizeof(Nucleic_Dict));
+    if (NULL == tabNd) {
+        err(EXIT_FAILURE, "Erreur avec calloc du dictionnaire\n");
+    }
 
     initNucleicDictionary(tabNd, sequences);
 

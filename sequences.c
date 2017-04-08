@@ -1,4 +1,5 @@
 #include "headers/sequences.h"
+#include "headers/start.h"
 #include "headers/global.h"
 
 #define DEBUG_SEQUENCES 0 // Si vaut 1, la sortie peut être longue car affiche toutes les séquences fasta
@@ -88,6 +89,9 @@ void parseHeader(FILE *fd, Sequences *seq) {
     // parse l'entête
     strtok(NULL, "\"");
     seq->description = (char *)calloc(DESCRIPTION_SIZE + 1, sizeof(char));
+    if (NULL == seq->description) {
+        err(EXIT_FAILURE, "Erreur avec calloc de description\n");
+    }
     strcpy(seq->description, strtok(NULL, "\""));
 
     // parse le champ "chromosome"
@@ -140,8 +144,13 @@ Sequences *readSeq(FILE *fd) {
 
     // Allocations dynamiques
     Sequences *seq = (Sequences *)calloc(1, sizeof(Sequences));
-
+    if (NULL == seq) {
+        err(EXIT_FAILURE, "Erreur avec calloc de Sequences\n");
+    }
     seq->sequence = (char *)calloc(SEQ_LINE_SIZE + 1, sizeof(char));
+    if (NULL == seq->sequence) {
+        err(EXIT_FAILURE, "Erreur avec calloc de seq->sequence\n");
+    }
 
     c = (char)fgetc(fd);
     if (c == '>') {
