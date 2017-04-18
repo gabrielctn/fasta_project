@@ -62,8 +62,7 @@ int searchNbPrefixDictionary(Nucleic_Dict *nd, char *sequence) {
 void initNucleicDictionary(Nucleic_Dict *nd, Sequences *s) {
     if (s->next == NULL) {
         return;
-    } else {
-        insertDictionary(nd, s->sequence);
     }
+    insertDictionary(nd, s->sequence);
     initNucleicDictionary(nd, s->next);
 }

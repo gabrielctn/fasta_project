@@ -15,11 +15,11 @@ Code  *initialize();
 int isARN(char *sequence);
 char * transcription(char *sequence);
 void compare(char *protein, char *tmp, Code *tab, int k);
-void translate(Sequences *seq, Menu *m);
+void translate(Sequences *seq, Options *args);
 int isNucleotide(char nucl);
 void printing(char *sequence, int seq_idx, char *protein, int prot_idx, char *name, FILE *fd);
-char *sequenceToTranslate(Sequences *seq, Menu *m, char *ARNm);
-void verbose(Menu *m);
+char *sequenceToTranslate(Sequences *seq, Options *args, char *ARNm);
+void verbose(Options *args);
 char *synthetizeProtein(int seq_idx, int prot_idx, char *sequence, Code *tab);
 
 #endif

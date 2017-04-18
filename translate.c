@@ -89,28 +89,28 @@ void printing(char *sequence, int seq_idx, char *protein, int prot_idx, char *na
     fputs("\n\n", fd);
 }
 
-char *sequenceToTranslate(Sequences *seq, Menu *m, char *ARNm) {
+char *sequenceToTranslate(Sequences *seq, Options *args, char *ARNm) {
     char *sequence;
 
-    if (m->codingSeq == 'n' && isARN(seq->sequence) == 0) {
+    if (strcmp(args->codingSeq, "no") == 0 && isARN(seq->sequence) == 0) {
         // Trancription de la séquence ADN en ARN pour ensuite la traduire
         ARNm = transcription(seq->sequence);
         sequence = strstr(ARNm, "AUG");
     } else {
-        char *codon = (m->codingSeq == 'o') ? "ATG" : "AUG";
+        char *codon = (strcmp(args->codingSeq, "yes") == 0) ? "ATG" : "AUG";
         // Recherche du codon initiateur et renvoie la séquence à traduire
         sequence = strstr(seq->sequence, codon);
     }
     return sequence;
 }
 
-void verbose(Menu *m) {
-    if (m->occ == 0) {
+void verbose(Options *args) {
+    if (args->occ == 0) {
         printf("\nTraduction de toutes les séquences du fichier FASTA\n\n");
-    } else if (m->occ == 1) {
+    } else if (args->occ == 1) {
         printf("\nTraduction de la première séquence du fichier FASTA\n\n");
     } else {
-        printf("\nTraduction des %d premières séquences du fichier FASTA\n\n", m->occ);
+        printf("\nTraduction des %d premières séquences du fichier FASTA\n\n", args->occ);
     }
 }
 
@@ -152,7 +152,7 @@ char *synthetizeProtein(int seq_idx, int prot_idx, char *sequence, Code *tab) {
     return protein;
 }
 
-void translate(Sequences *seq, Menu *m) {
+void translate(Sequences *seq, Options *args) {
     // Création du fichier de sortie pour la traduction
     FILE *fd = NULL;
     int nbOcc = 0;
@@ -164,25 +164,25 @@ void translate(Sequences *seq, Menu *m) {
     }
 
     Code *tab = initialize();
-    verbose(m);
+    verbose(args);
 
     while (seq != NULL) {
         char *ARNm = NULL;
         int seq_idx = 0, prot_idx = 0;
 
-        char *sequence = sequenceToTranslate(seq, m, ARNm);
+        char *sequence = sequenceToTranslate(seq, args, ARNm);
         if (sequence != NULL) { // Si on a bien trouvé un codon initiateur
             char *protein = synthetizeProtein(seq_idx, prot_idx, sequence, tab);
             // printf("%s\n", protein);
             printing(sequence, seq_idx, protein, prot_idx, seq->name, fd);
             free(protein);
         }
-        if (m->codingSeq == 'n') {
+        if (strcmp(args->codingSeq, "no") == 0) {
             free(ARNm);
         }
         seq = seq->next;
         ++nbOcc;
-        if (nbOcc == m->occ) {
+        if (nbOcc == args->occ) {
             break;
         }
     }

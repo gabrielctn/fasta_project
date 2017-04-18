@@ -3,30 +3,29 @@
 #include "headers/start.h"
 #include "headers/dictionary.h"
 #include "headers/translate.h"
+#include "headers/sequences.h"
 
 #define DEBUG 0
-#define CLEARSCR() printf("\033[H\033[2J");
 
 extern Nucleic_Dict *tabNd;
 
 int main(int argc, char *argv[]) {
-    /* Allocation des arguments en ligne de commande
-     * et de la structure contenant les variables du menu */
+    /* Allocation des arguments en ligne de commande */
     Options *args = (Options *)calloc(1, sizeof(Options));
     if (NULL == args) {
         err(EXIT_FAILURE, "Erreur avec calloc de Options\n");
     }
-    Menu *m = (Menu *)calloc(1, sizeof(Menu));
-    if (NULL == m) {
-        err(EXIT_FAILURE, "Erreur avec calloc de Menu\n");
-    }
     Sequences *sequences = NULL;
     int nbPrefix;
-    int choice;
 
     args->nucleic = FALSE;
     args->proteic = FALSE;
-    parseCommandLine(argc, argv, args);
+    args->translate = FALSE;
+    args->chromosome = 6;
+    /* On récupère et vérifie les arguments données en ligne de comande */
+    getOptions(argc, argv, args);
+    // printf("%d %d\n", args->chromosome, args->position);
+    checkArgs(args);
 
     FILE *fd = openFile(args);
 
@@ -46,58 +45,48 @@ int main(int argc, char *argv[]) {
 
     initNucleicDictionary(tabNd, sequences);
 
-    /* Affiche le menu et initialise la structure des variables du menu données par l'utilisateur */
-    CLEARSCR();
-    do {
-        choice = menu(m);
-        CLEARSCR();
-        switch (choice) {
-        case 1:
-            searchByGeneName(sequences, m->searchString, m->occ);
-            break;
-        case 2:
-            searchBySequence(sequences, m->occ, m->searchString);
-            break;
-        case 3:
-            searchByPosition(sequences, m->occ, m->position, m->chromosome);
-            break;
-        case 4:
-            searchBySubSequence(sequences, m->occ, m->searchString);
-            break;
-        case 5:
-            printf("Recherche de la séquence \"%s\" dans le dictionnaire\n\n", m->searchString);
-            if (searchSeqDictionary(tabNd, m->searchString)) {
-                printf("Trouvé ! La séquence se trouve dans le dictionnaire\n\n");
-            } else {
-                printf("Désolé, aucune séquence correspondante ne se trouve dans le dictionnaire\n\n");
-            }
-            break;
-        case 6:
-            printf("Recherche du nombre de séquences commençant par \"%s\" dans le dictionnaire\n\n", m->searchString);
-            if ((nbPrefix = searchNbPrefixDictionary(tabNd, m->searchString))) {
-                printf("Il y a %d séquences dont \"%s\" est le préfix\n\n", nbPrefix, m->searchString);
-            } else {
-                printf("Aucune séquence commence par \"%s\"\n\n", m->searchString);
-            }
-            break;
-        case 7:
-            if (args->nucleic == TRUE) {
-                translate(sequences, m);
-            } else {
-                printf("Fichier non nucléique, impossible de traduire\n");
-            }
-            break;
-        default:
-            ;
+    if (args->gene) {
+        printf("Recherche du gène \"%s\" dans la base\n\n", args->gene);
+        if (searchByGeneName(sequences, args->gene, args->occ) == 0) {
+            printf("Désolé, aucune séquence ne correspond au gène %s\n\n", args->gene);
         }
-    } while (choice != 8);
-
-    system("clear");
-    printf("\nAu revoir cher bioinformaticien ...\n\n");
+    } else if (args->sequence) {
+        printf("Recherche de la séquence \"%s\" dans la base\n\n", args->sequence);
+        if (searchBySequence(sequences, args->occ, args->sequence) == 0) {
+            printf("Désolé, la séquence n'a pas été trouvée dans la base\n\n");
+        }
+    } else if (args->subSequence) {
+        printf("Recherche de la sous-séquence \"%s\" dans la base\n\n", args->subSequence);
+        searchBySubSequence(sequences, args->occ, args->subSequence);
+    } else if (args->position && (args->chromosome != 6)) {
+        char *chr = enum2str(args->chromosome);
+        printf("Recherche de la position %d avec un type chromosomique %s dans la base\n\n", args->position, chr);
+        if (searchByPosition(sequences, args->occ, args->position, args->chromosome) == 0) {
+            printf("Désolé, la position %d n'a été trouvée dans aucune séquence de type chromosomique %s\n\n", args->position, chr);
+        }
+        free(chr);
+    } else if (args->dictSequence) {
+        printf("Recherche de la séquence \"%s\" dans le dictionnaire\n\n", args->dictSequence);
+        if (searchSeqDictionary(tabNd, args->dictSequence)) {
+            printf("Trouvé ! La séquence se trouve dans le dictionnaire\n\n");
+        } else {
+            printf("Désolé, aucune séquence correspondante ne se trouve dans le dictionnaire\n\n");
+        }
+    } else if (args->dictPrefix) {
+        printf("Recherche du nombre de séquences commençant par \"%s\" dans le dictionnaire\n\n", args->dictPrefix);
+        nbPrefix = searchNbPrefixDictionary(tabNd, args->dictPrefix);
+        if (nbPrefix) {
+            printf("Il y a %d séquences dont \"%s\" est le préfix\n\n", nbPrefix, args->dictPrefix);
+        } else {
+            printf("Aucune séquence commence par \"%s\"\n\n", args->dictPrefix);
+        }
+    } else if (args->translate) {
+        translate(sequences, args);
+    }
+    printf("\n\n");
 
     /* FREE ALL */
     freeSeq(sequences);
-    freeMenu(m);
     freeOpt(args);
     free(tabNd);
 

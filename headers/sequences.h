@@ -22,6 +22,7 @@ typedef struct sequences {
 void printSeq(Sequences *s);
 void printAllSeq(Sequences *s);
 enum chromosome_t str2enum(char *chr);
+char *enum2str(enum chromosome_t chr);
 void freeSeq(Sequences *s);
 void parseHeader(FILE *fd, Sequences *seq);
 void getSeq(FILE *fd, Sequences *seq, char *singleLine);

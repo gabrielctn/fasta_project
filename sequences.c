@@ -54,6 +54,26 @@ enum chromosome_t str2enum(char *chr) {
     return chromosome;
 }
 
+/*converti le type enum du chromosome en string */
+char *enum2str(enum chromosome_t chr) {
+    char *chromosome;
+
+    if (chr == I) {
+        chromosome = strdup("I");
+    } else if (chr == II) {
+        chromosome = strdup("II");
+    } else if (chr == III) {
+        chromosome = strdup("III");
+    } else if (chr == MT) {
+        chromosome = strdup("MT");
+    } else if (chr == MTR) {
+        chromosome = strdup("MTR");
+    } else if (chr == AB325691) {
+        chromosome = strdup("AB325691");
+    }
+    return chromosome;
+}
+
 /* Libère récursivement la liste chaînée */
 void freeSeq(Sequences *s) {
     if (s == NULL) {
