@@ -38,6 +38,15 @@ Search in the dictionary-tree:
 - Full sequences
 - Number of sequences starting by a given prefix
 
-Translation: 
+Translation:
 
 Nucleic sequences are translated into their proteic sequences. Output is in `data/translation.txt`
+
+## Debug
+
+Valgrind command line example :
+
+`valgrind --track-origins=yes --leak-check=full --max-stackframe=3000000 ./projet_fasta -n data/S_pombe.fasta`
+
+`--max-stackframe=3000000` is set because we initialize a huge array of structure at the begining of the program.
+That means a large range of adresses to allocate, and valgrind warns for that.
