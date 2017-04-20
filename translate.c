@@ -68,29 +68,6 @@ void compare(char *protein, char *tmp, Code *tab, int prot_idx) {
 
 int isNucleotide(char nucl) {
     return nucl == 'A' || nucl == 'C' || nucl == 'G' || nucl == 'U' || nucl == 'T';
-
-    // Commentaire suivant si la séquence a pu être traduite entièrement ou si un codon STOP est au milieu de la séquence
-    if (sequence[j] == 'A' || sequence[j] == 'C' || sequence[j] == 'G' || sequence[j] == 'U' || sequence[j] == 'T') {
-        fprintf(fd, "Traduction du gène %s : \n", name);
-        fprintf(fd, "Attention, le codon STOP est prématuré\n");
-    } else if (protein[k] != '*') {
-        fprintf(fd, "Traduction du gène %s : \n", name);
-        fprintf(fd, "Attention, il n'y a pas de codon STOP\n");
-    } else {
-        fprintf(fd, "Traduction du gène %s : \n", name);
-    }
-    for (a = 0; a < strlen(protein) && protein[a] != '*'; a++) {
-        if (a % PROT_LINE_SIZE == 0 && a != 0) {
-            fputs("\n", fd);
-        }
-        fputc(protein[a], fd);
-    }
-    if (protein[a] == '*') {
-        fputs("*", fd);
-    }
-    fputs("\n\n", fd);
-}
-
 }
 
 void printing(char *sequence, int seq_idx, char *protein, int prot_idx, char *name, FILE *fd) {
@@ -125,9 +102,6 @@ char *sequenceToTranslate(Sequences *seq, Menu *m, char *ARNm) {
         sequence = strstr(seq->sequence, codon);
     }
     return sequence;
-        // Si on a bien trouvé un codon initiateur
-                for (i = 0; i < 3; i++) {
-                    // Si la séquence donnée est codante, on traduit directement de l'ADN, il faut donc changer les T en U pour la lecture des codons dans le code génétique
 }
 
 void verbose(Menu *m) {
