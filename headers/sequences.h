@@ -2,14 +2,16 @@
 #define SEQUENCES_H
 
 #include "global.h"
+#include "start.h"
 
 #define DESCRIPTION_SIZE 154
 #define HEADER_SIZE 274
 #define SEQ_LINE_SIZE 60
 
-enum chromosome_t {I, II, III, MT, MTR, AB325691};
+
 
 typedef struct sequences {
+    char *assemblyHeader;
     char name[17];     // le nom de la sequence sans le '>' initial, termine par '\0'
     enum chromosome_t chromosome;
     int start;     // numero de base de debut
@@ -25,7 +27,8 @@ enum chromosome_t str2enum(char *chr);
 void freeSeq(Sequences *s);
 void parseHeader(FILE *fd, Sequences *seq);
 void getSeq(FILE *fd, Sequences *seq, char *singleLine);
-Sequences *readSeq(FILE *fd);
+Sequences *readSeq(FILE *fd, Options *args);
 long totalLengthSequences(Sequences *seq);
+char *parseHeaderAssembleFile(FILE *fd);
 
 #endif

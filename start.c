@@ -40,7 +40,9 @@ void printMenu() {
     printf("\t\t6. Recherche de séquences par préfixe dans le dictionnaire\n\n");
     printf("\tTRADUCTION\n\n");
     printf("\t\t7. Traduction de séquences nucléiques\n\n");
-    printf("\t8. Quitter\n");
+    printf("\tASSEMBLAGE\n\n");
+    printf("\t\t8. Assemblage du génome\n\n");
+    printf("\t9. Quitter\n");
 }
 
 void displayUsage() {
@@ -62,7 +64,7 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
         displayUsage();
     }
 
-    while ((opt = getopt(argc, argv, "hn:p:")) != -1)
+    while ((opt = getopt(argc, argv, "ha:n:p:")) != -1)
         switch (opt) {
         case 'h':
             displayUsage();
@@ -73,6 +75,10 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
         case 'p':
             args->proteic = TRUE;
             args->protFile = strdup(optarg);
+            break;
+        case 'a':
+            args->assembly = TRUE;
+            args->assembleFile = strdup(optarg);
             break;
         default:
             abort();
@@ -92,10 +98,16 @@ FILE *openFile(Options *args) {
             err(EXIT_FAILURE, "Erreur fopen: %s:", args->nuclFile);
         }
         return fd;
-    } else {
+    } else if (args->protFile) {
         fd = fopen(args->protFile, "r");
         if (fd == NULL) {
             err(EXIT_FAILURE, "Erreur fopen: %s:", args->protFile);
+        }
+        return fd;
+    } else {
+        fd = fopen(args->assembleFile, "r");
+        if (fd == NULL) {
+            err(EXIT_FAILURE, "Erreur fopen: %s:", args->assembleFile);
         }
         return fd;
     }
@@ -135,7 +147,7 @@ char *getSring() {
     return line;
 }
 
-int menu(Menu *m) {
+int menu(Menu *m, Options *args) {
     int choice;
 
     printMenu();
@@ -143,7 +155,7 @@ int menu(Menu *m) {
     do {
         printf("\n\nQue voulez-vous faire ? : ");
         scanf("%d", &choice);
-    } while (choice < 1 && choice > 8);
+    } while (choice < 1 && choice > 9);
 
     switch (choice) {
     case 1:
@@ -205,6 +217,9 @@ int menu(Menu *m) {
         scanf(" %c", &(m->codingSeq));
         printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
+        break;
+    case 8:
+        args->assembly = TRUE;
         break;
     default:
         ;
