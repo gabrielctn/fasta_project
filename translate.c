@@ -16,8 +16,8 @@ Code *initialize() {
     for (i = 0; i < 64; i++) {
         fscanf(fd, "%c %s\n", &(tab[i].acid), tab[i].codon);
     }
-
     fclose(fd);
+
     return tab;
 }
 
@@ -36,12 +36,11 @@ char *transcription(char *sequence) {
     if (NULL == inversion) {
         err(EXIT_FAILURE, "Erreur avec calloc de inversion\n");
     }
-
     // Transcription: l'ADN est transformé en ARN pour pouvoir être traduite
     // Les T deviennent des A et les C des G et inversement
     for (i = 0; i < seq_length; i++) {
         if (sequence[i] == 'A') {
-            inversion[seq_length - i - 1] = 'U';                // METTRE DANS UNE FONCTION CAR REPETITION 4 FOIS
+            inversion[seq_length - i - 1] = 'U';
         } else if (sequence[i] == 'T') {
             inversion[seq_length - i - 1] = 'A';
         } else if (sequence[i] == 'C') {

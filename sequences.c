@@ -146,6 +146,7 @@ Sequences *readSeq(FILE *fd, Options *args) {
         return NULL;              // Fin de fichier: fin de la liste chaînée
     }
 
+
     // Allocations dynamiques
     Sequences *seq = (Sequences *)calloc(1, sizeof(Sequences));
     if (NULL == seq) {
