@@ -3,6 +3,7 @@
 #include "headers/start.h"
 #include "headers/dictionary.h"
 #include "headers/translate.h"
+#include "headers/assembly.h"
 
 #define DEBUG 0
 #define CLEARSCR() printf("\033[H\033[2J");
@@ -24,14 +25,13 @@ int main(int argc, char *argv[]) {
     int nbPrefix;
     int choice;
 
-    args->nucleic = FALSE;
-    args->proteic = FALSE;
     parseCommandLine(argc, argv, args);
 
     FILE *fd = openFile(args);
 
     /* Lit le fichier FASTA et rempli la structure séquences */
-    sequences = readSeq(fd);
+    sequences = readSeq(fd, args);
+
     long totalLenSeq = totalLengthSequences(sequences);
 
     if (DEBUG) {
@@ -44,12 +44,12 @@ int main(int argc, char *argv[]) {
         err(EXIT_FAILURE, "Erreur avec calloc du dictionnaire\n");
     }
 
-    initNucleicDictionary(tabNd, sequences);
+    // initNucleicDictionary(tabNd, sequences);
 
     /* Affiche le menu et initialise la structure des variables du menu données par l'utilisateur */
     CLEARSCR();
     do {
-        choice = menu(m);
+        choice = menu(m, args);
         CLEARSCR();
         switch (choice) {
         case 1:
@@ -87,10 +87,15 @@ int main(int argc, char *argv[]) {
                 printf("Fichier non nucléique, impossible de traduire\n");
             }
             break;
+        case 8:
+            if (args->assembly == TRUE) {
+                char **totalReads = generateReads(sequences);
+            }
+            break;
         default:
             ;
         }
-    } while (choice != 8);
+    } while (choice != 9);
 
     system("clear");
     printf("\nAu revoir cher bioinformaticien ...\n\n");

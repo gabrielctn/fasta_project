@@ -1,6 +1,4 @@
 #include "headers/sequences.h"
-#include "headers/start.h"
-#include "headers/global.h"
 
 #define DEBUG_SEQUENCES 0 // Si vaut 1, la sortie peut être longue car affiche toutes les séquences fasta
 
@@ -64,6 +62,12 @@ void freeSeq(Sequences *s) {
         free(s->description);
         free(s);
     }
+}
+
+char *parseHeaderAssembleFile(FILE *fd) {
+    char *str = (char *)calloc(HEADER_SIZE + 1, sizeof(char));
+    fgets(str, HEADER_SIZE + 1, fd);    // récupère 1ère ligne
+    return str;
 }
 
 /* Parse l'entête des séquences */
@@ -134,7 +138,7 @@ void getSeq(FILE *fd, Sequences *seq, char *singleLine) {
 }
 
 /* Parse un fichier FASTA en allouant dynamiquement une liste chaînée */
-Sequences *readSeq(FILE *fd) {
+Sequences *readSeq(FILE *fd, Options *args) {
     char c;
     char singleLine[SEQ_LINE_SIZE + 2];
 
@@ -154,7 +158,11 @@ Sequences *readSeq(FILE *fd) {
 
     c = (char)fgetc(fd);
     if (c == '>') {
-        parseHeader(fd, seq);
+        if (args->assembly) {
+            seq->assemblyHeader = strdup(parseHeaderAssembleFile(fd));
+        } else {
+            parseHeader(fd, seq);
+        }
         if (DEBUG_SEQUENCES) {
             printf("Nom: %s\nChromosome: %d\ndebut: %d\nfin: %d\nDescription: %s\n", seq->name, seq->chromosome, seq->start, seq->end, seq->description);
         }
@@ -163,7 +171,7 @@ Sequences *readSeq(FILE *fd) {
             printf("%s\n", seq->sequence);
         }
     }
-    seq->next = readSeq(fd);     // Appel récursif pour remplir la liste chaînée
+    seq->next = readSeq(fd, args);     // Appel récursif pour remplir la liste chaînée
 
     return seq;
 }

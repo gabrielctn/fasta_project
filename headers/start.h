@@ -1,6 +1,8 @@
 #ifndef START_H
 #define START_H
 
+enum chromosome_t {I, II, III, MT, MTR, AB325691};
+
 typedef struct menu {
     char codingSeq;
     char *searchString;     // chaîne de caractères utilisée pour les recherches dans la base ou dictionnaire
@@ -15,10 +17,12 @@ typedef struct args {
     char *nuclFile;
     bool proteic;
     char *protFile;
+    bool assembly;
+    char *assembleFile;
 } Options;
 
 void printMenu();
-int menu(Menu *m);
+int menu(Menu *m, Options *args);
 void freeMenu(Menu *m);
 void freeOpt(Options *args);
 void displayUsage();
