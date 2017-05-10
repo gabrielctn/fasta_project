@@ -10,6 +10,7 @@
 #include <ctype.h>
 #include <err.h>
 #include <termios.h>
+#include <time.h>
 
 #define EXIT_FAILURE 1
 

@@ -1,6 +1,10 @@
 #include "headers/sequences.h"
+#include "headers/global.h"
 
 #define DEBUG_SEQUENCES 0 // Si vaut 1, la sortie peut être longue car affiche toutes les séquences fasta
+
+int progress = 0;
+int loading = 0;
 
 /* Affichage d'une sequence */
 void printSeq(Sequences *s) {
@@ -60,11 +64,14 @@ void freeSeq(Sequences *s) {
         freeSeq(s->next);
         free(s->sequence);
         free(s->description);
+        free(s->specialHeader);
         free(s);
     }
 }
 
-char *parseHeaderAssembleFile(FILE *fd) {
+/* Récupère la 1ère ligne des séquences fasta sans les traiter
+ * c'est-à-dire sans chercher tous les champs */
+char *parseSpecialHeader(FILE *fd) {
     char *str = (char *)calloc(HEADER_SIZE + 1, sizeof(char));
     fgets(str, HEADER_SIZE + 1, fd);    // récupère 1ère ligne
     return str;
@@ -76,35 +83,38 @@ void parseHeader(FILE *fd, Sequences *seq) {
     char str[HEADER_SIZE + 1], chromosome[40];
 
     fgets(str, HEADER_SIZE + 1, fd);    // récupère 1ère ligne
-
-    for (i = 0; i < 5; i++) { // lit les 5 premiers champs de la 1ère ligne
-        switch (i) {
-        case 0:
-            strcpy(seq->name, strtok(str, " "));                     // printf("%s",seq->sequence);Récupère le nom
-            break;
-        case 2:
-            strcpy(chromosome, strtok(NULL, " "));                    // Récupère le champ chromosome pour le parser après
-            break;
-        default:
-            strtok(NULL, " ");
+    if (strstr(str, "\"") != NULL) {
+        for (i = 0; i < 5; i++) { // lit les 5 premiers champs de la 1ère ligne
+            switch (i) {
+            case 0:
+                strcpy(seq->name, strtok(str, " "));                 // printf("%s",seq->sequence);Récupère le nom
+                break;
+            case 2:
+                strcpy(chromosome, strtok(NULL, " "));                // Récupère le champ chromosome pour le parser après
+                break;
+            default:
+                strtok(NULL, " ");
+            }
         }
-    }
 
-    // parse l'entête
-    strtok(NULL, "\"");
-    seq->description = (char *)calloc(DESCRIPTION_SIZE + 1, sizeof(char));
-    if (NULL == seq->description) {
-        err(EXIT_FAILURE, "Erreur avec calloc de description\n");
-    }
-    strcpy(seq->description, strtok(NULL, "\""));
+        // parse l'entête
+        strtok(NULL, "\"");
+        seq->description = (char *)calloc(DESCRIPTION_SIZE + 1, sizeof(char));
+        if (NULL == seq->description) {
+            err(EXIT_FAILURE, "Erreur avec calloc de description\n");
+        }
+        strcpy(seq->description, strtok(NULL, "\""));
 
-    // parse le champ "chromosome"
-    strtok(chromosome, ":");
-    strtok(NULL, ":");
-    seq->chromosome = str2enum(strtok(NULL, ":"));    // type
-    seq->start = atoi(strtok(NULL, ":"));    // debut
-    seq->end = atoi(strtok(NULL, ":"));    // fin
-    strtok(NULL, ":");
+        // parse le champ "chromosome"
+        strtok(chromosome, ":");
+        strtok(NULL, ":");
+        seq->chromosome = str2enum(strtok(NULL, ":")); // type
+        seq->start = atoi(strtok(NULL, ":")); // debut
+        seq->end = atoi(strtok(NULL, ":")); // fin
+        strtok(NULL, ":");
+    } else {
+        seq->specialHeader = str;
+    }
 }
 
 /* Récupère la séquence nucléotidique et l'enregistre dans la structure */
@@ -115,6 +125,11 @@ void getSeq(FILE *fd, Sequences *seq, char *singleLine) {
     seq->sequence[0] = '\0';
 
     do {
+        progress++;
+        if (progress % 1000 == 0) {
+            printLoading();
+        }
+
         ungetc(c, fd);
         fgets(singleLine, SEQ_LINE_SIZE + 1, fd);
         c = (char)fgetc(fd);
@@ -132,7 +147,7 @@ void getSeq(FILE *fd, Sequences *seq, char *singleLine) {
         if (seq->sequence[strlen(seq->sequence) - 1] == '\n') {
             seq->sequence[strlen(seq->sequence) - 1] = '\0';
         }
-        c = (char)fgetc(fd);         // Vérifie si la ligne suivante est un nouvel entête ou la suite de la séquence
+        c = (char)fgetc(fd); // Vérifie si la ligne suivante est un nouvel entête ou la suite de la séquence
     } while (c != '>' && !feof(fd));
     ungetc(c, fd);
 }
@@ -143,9 +158,8 @@ Sequences *readSeq(FILE *fd, Options *args) {
     char singleLine[SEQ_LINE_SIZE + 2];
 
     if (feof(fd)) {
-        return NULL;              // Fin de fichier: fin de la liste chaînée
+        return NULL; // Fin de fichier: fin de la liste chaînée
     }
-
 
     // Allocations dynamiques
     Sequences *seq = (Sequences *)calloc(1, sizeof(Sequences));
@@ -160,7 +174,9 @@ Sequences *readSeq(FILE *fd, Options *args) {
     c = (char)fgetc(fd);
     if (c == '>') {
         if (args->assembly) {
-            seq->assemblyHeader = strdup(parseHeaderAssembleFile(fd));
+            char *header = parseSpecialHeader(fd);
+            seq->specialHeader = strdup(header);
+            free(header);
         } else {
             parseHeader(fd, seq);
         }
@@ -172,14 +188,26 @@ Sequences *readSeq(FILE *fd, Options *args) {
             printf("%s\n", seq->sequence);
         }
     }
-    seq->next = readSeq(fd, args);     // Appel récursif pour remplir la liste chaînée
+    seq->next = readSeq(fd, args); // Appel récursif pour remplir la liste chaînée
 
     return seq;
 }
 
+/* Calcule la longueur total de toutes les séquences du fichier fasta bout-à-bout
+ *  pour générer le dictionnaire du main*/
 long totalLengthSequences(Sequences *seq) {
     if (seq == NULL) {
         return 0;
     }
     return strlen(seq->sequence) + totalLengthSequences(seq->next);
+}
+
+void printLoading() {
+    char *tab[5] = { "\\ ", "| ", "/ ", "― " };
+    printf("\rAnalyse des séquences du fichier... %s", tab[loading]);
+    loading++;
+    if (loading == 4) {
+        loading = 0;
+    }
+    fflush(stdout);
 }
