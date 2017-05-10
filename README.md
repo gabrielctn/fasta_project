@@ -53,16 +53,6 @@ You can set different parameters to change the assembly precision and number of 
 
 ## Debug
 
-Valgrind command line example :
-
-`valgrind --track-origins=yes --leak-check=full --max-stackframe=3000000 ./projet_fasta -n data/S_pombe.fasta`
-
-`--max-stackframe=3000000` is set because we initialize a huge array of structure at the begining of the program.
-That means a large range of adresses to allocate, and valgrind warns for that.
-
-
-## Debug
-
 Valgrind command line example to test with S_pombe.fasta file only:
 
 `valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --max-stackframe=3000000 ./projet_fasta -n data/S_pombe.fasta`
