@@ -16,9 +16,9 @@ void setTerminalMode(int mode) {
     }
 
     if (mode) {
-        settings.c_lflag &= ~ICANON; // disable canonical mode
+        settings.c_lflag &= ~ICANON; // desactive mode canonical
     } else {
-        settings.c_lflag |= ICANON; // enable canonical mode
+        settings.c_lflag |= ICANON; // active mode canonical
     }
 
     parameters = tcsetattr(STDIN_FILENO, TCSANOW, &settings);
@@ -40,18 +40,18 @@ void printMenu() {
     printf("\t\t6. Recherche de séquences par préfixe dans le dictionnaire\n\n");
     printf("\tTRADUCTION\n\n");
     printf("\t\t7. Traduction de séquences nucléiques\n\n");
-    printf("\tASSEMBLAGE\n\n");
-    printf("\t\t8. Assemblage du génome\n\n");
-    printf("\t9. Quitter\n");
+    printf("\t8. Quitter\n");
 }
 
 void displayUsage() {
     printf("\n\n********** USAGE **********\n\n");
-    printf("./projet [-h] or [-n NUCLEIC_FILENAME] or [-p PROTEIC_FILENAME]\n\n");
+    printf("./projet [-h] or [-a NUCLEIC_FILENAME -c HEADER] or [-n NUCLEIC_FILENAME] or [-p PROTEIC_FILENAME]\n\n");
 
     printf("  -h	Print this help and exit\n");
     printf("  -n NUCLEIC_FILENAME	Work with a FASTA file containing nucleotide sequences\n");
-    printf("  -p PROTEIC_FILENAME	Work with a FASTA file containing proteic sequences\n\n\n");
+    printf("  -p PROTEIC_FILENAME	Work with a FASTA file containing proteic sequences\n");
+    printf("  -a NUCLEIC FILENAME   Execute assembly\n");
+    printf("  -c HEADER             Header or unique element of the header to identify the sequence to assemble\n\n\n");
 
     exit(EXIT_FAILURE);
 }
@@ -64,7 +64,7 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
         displayUsage();
     }
 
-    while ((opt = getopt(argc, argv, "ha:n:p:")) != -1)
+    while ((opt = getopt(argc, argv, "ha:c:n:p:")) != -1)
         switch (opt) {
         case 'h':
             displayUsage();
@@ -80,8 +80,11 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
             args->assembly = TRUE;
             args->assembleFile = strdup(optarg);
             break;
+        case 'c':
+            args->seqChoice = strdup(optarg);
+            break;
         default:
-            abort();
+            displayUsage();
         }
 
     for (i = optind; i < argc; i++) {
@@ -121,6 +124,8 @@ void freeMenu(Menu *m) {
 void freeOpt(Options *args) {
     free(args->nuclFile);
     free(args->protFile);
+    free(args->assembleFile);
+    free(args->seqChoice);
     free(args);
 }
 
@@ -147,7 +152,7 @@ char *getSring() {
     return line;
 }
 
-int menu(Menu *m, Options *args) {
+int menu(Menu *m) {
     int choice;
 
     printMenu();
@@ -155,7 +160,7 @@ int menu(Menu *m, Options *args) {
     do {
         printf("\n\nQue voulez-vous faire ? : ");
         scanf("%d", &choice);
-    } while (choice < 1 && choice > 9);
+    } while (choice < 1 && choice > 8);
 
     switch (choice) {
     case 1:
@@ -217,9 +222,6 @@ int menu(Menu *m, Options *args) {
         scanf(" %c", &(m->codingSeq));
         printf("Entrez le nombre d'occurences acceptées, toutes (0), 1 ou n : ");
         scanf("%d", &(m->occ));
-        break;
-    case 8:
-        args->assembly = TRUE;
         break;
     default:
         ;
