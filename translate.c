@@ -1,6 +1,8 @@
 #include "headers/translate.h"
 #include "headers/global.h"
 
+/* Initialize la structure du code génétique à partir du fichier
+ * contenant le code génétique */
 Code *initialize() {
     int i;
     Code *tab = (Code *)calloc(64, sizeof(Code));
@@ -16,44 +18,44 @@ Code *initialize() {
     for (i = 0; i < 64; i++) {
         fscanf(fd, "%c %s\n", &(tab[i].acid), tab[i].codon);
     }
-
     fclose(fd);
+
     return tab;
 }
 
 int isARN(char *sequence) {
-    if (strstr(sequence, "U") == NULL) {        // Si on a trouvé un U dans la séquence, on a une séquence d'ARN, on peut donc traduire directement
-        return 0;
+    if (strstr(sequence, "U") == NULL) { // Si on a trouvé un U dans la séquence,
+        return 0;                        // on a une séquence d'ARN, on peut donc traduire directement
     }
     return 1;
 }
 
 char *transcription(char *sequence) {
-    size_t seq_length, i;
+    size_t seqLength, i;
 
-    seq_length = strlen(sequence);
-    char *inversion = (char *)calloc(seq_length + 1, sizeof(char));
-    if (NULL == inversion) {
-        err(EXIT_FAILURE, "Erreur avec calloc de inversion\n");
+    seqLength = strlen(sequence);
+    char *reverse = (char *)calloc(seqLength + 1, sizeof(char));
+    if (NULL == reverse) {
+        err(EXIT_FAILURE, "Erreur avec calloc de reverse\n");
     }
-
     // Transcription: l'ADN est transformé en ARN pour pouvoir être traduite
     // Les T deviennent des A et les C des G et inversement
-    for (i = 0; i < seq_length; i++) {
+    for (i = 0; i < seqLength; i++) {
         if (sequence[i] == 'A') {
-            inversion[seq_length - i - 1] = 'U';                // METTRE DANS UNE FONCTION CAR REPETITION 4 FOIS
+            reverse[seqLength - i - 1] = 'U';
         } else if (sequence[i] == 'T') {
-            inversion[seq_length - i - 1] = 'A';
+            reverse[seqLength - i - 1] = 'A';
         } else if (sequence[i] == 'C') {
-            inversion[seq_length - i - 1] = 'G';
+            reverse[seqLength - i - 1] = 'G';
         } else {
-            inversion[seq_length - i - 1] = 'C';
+            reverse[seqLength - i - 1] = 'C';
         }
     }
-    inversion[i] = '\0';
-    return inversion;
+    reverse[i] = '\0';
+    return reverse;
 }
 
+// Compare le codon analysé au code génétique
 void compare(char *protein, char *tmp, Code *tab, int prot_idx) {
     int i;
 
@@ -70,6 +72,7 @@ int isNucleotide(char nucl) {
     return nucl == 'A' || nucl == 'C' || nucl == 'G' || nucl == 'U' || nucl == 'T';
 }
 
+// Ecrit la séquence traduite avec des commentaires dans le fichier "data/translation.txt"
 void printing(char *sequence, int seq_idx, char *protein, int prot_idx, char *name, FILE *fd) {
     size_t a;
 
@@ -80,6 +83,7 @@ void printing(char *sequence, int seq_idx, char *protein, int prot_idx, char *na
     } else if (protein[prot_idx] != '*') {
         fprintf(fd, "Attention, il n'y a pas de codon STOP\n");
     }
+    // Ecrit la séquence
     for (a = 0; a < strlen(protein); a++) {
         if (a % PROT_LINE_SIZE == 0 && a != 0) {
             fputs("\n", fd);
@@ -98,7 +102,7 @@ char *sequenceToTranslate(Sequences *seq, Menu *m, char *ARNm) {
         sequence = strstr(ARNm, "AUG");
     } else {
         char *codon = (m->codingSeq == 'o') ? "ATG" : "AUG";
-        // Recherche du codon initiateur et renvoie la séquence à traduire
+        // Recherche le codon initiateur et renvoie la séquence à traduire
         sequence = strstr(seq->sequence, codon);
     }
     return sequence;
@@ -114,6 +118,8 @@ void verbose(Menu *m) {
     }
 }
 
+/* Traduit une séquence nucléotidique en séquence protéique.
+ * Prend en compte si c'est une séquence codante ou non. */
 char *synthetizeProtein(int seq_idx, int prot_idx, char *sequence, Code *tab) {
     int i;
     char tmp[4];
@@ -131,9 +137,10 @@ char *synthetizeProtein(int seq_idx, int prot_idx, char *sequence, Code *tab) {
             tmp[i] = (sequence[seq_idx] == 'T') ? 'U' : sequence[seq_idx];
             seq_idx++;
         }
+
         tmp[i] = '\0';
         compare(protein, tmp, tab, prot_idx);
-        // Si le codon est STOP , représenté par *, on arrête de traduire la séquence
+        // Si c'est un codon STOP, représenté par *, on arrête de traduire la séquence
         if (protein[prot_idx] == '*') {
             protein[prot_idx + 1] = '\0';
             return protein;
@@ -145,8 +152,12 @@ char *synthetizeProtein(int seq_idx, int prot_idx, char *sequence, Code *tab) {
             protein = tmpProtein;
         }
         prot_idx++;
-    } while (isNucleotide(sequence[seq_idx])); // Tant que la séquence n'est pas finie, il existe des bases nucléotidiques
+    } while (isNucleotide(sequence[seq_idx]));/* Tant que la séquence n'est pas finie,
+                                               * il existe des bases nucléotidiques */
     // En sortant ici, il n'y a pas eu de codon stop, donc d'*
+    if (sequence[seq_idx] == 'N') {
+        err(EXIT_FAILURE, " Erreur: rencontre du nucléotide N, acide nucléique masqué. Impossible de traduire\n");
+    }
     protein[prot_idx] = '\0';
 
     return protein;

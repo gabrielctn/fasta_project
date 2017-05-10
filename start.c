@@ -16,9 +16,9 @@ void setTerminalMode(int mode) {
     }
 
     if (mode) {
-        settings.c_lflag &= ~ICANON; // disable canonical mode
+        settings.c_lflag &= ~ICANON; // desactive mode canonical
     } else {
-        settings.c_lflag |= ICANON; // enable canonical mode
+        settings.c_lflag |= ICANON; // active mode canonical
     }
 
     parameters = tcsetattr(STDIN_FILENO, TCSANOW, &settings);
@@ -45,11 +45,13 @@ void printMenu() {
 
 void displayUsage() {
     printf("\n\n********** USAGE **********\n\n");
-    printf("./projet [-h] or [-n NUCLEIC_FILENAME] or [-p PROTEIC_FILENAME]\n\n");
+    printf("./projet [-h] or [-a NUCLEIC_FILENAME -c HEADER] or [-n NUCLEIC_FILENAME] or [-p PROTEIC_FILENAME]\n\n");
 
     printf("  -h	Print this help and exit\n");
     printf("  -n NUCLEIC_FILENAME	Work with a FASTA file containing nucleotide sequences\n");
-    printf("  -p PROTEIC_FILENAME	Work with a FASTA file containing proteic sequences\n\n\n");
+    printf("  -p PROTEIC_FILENAME	Work with a FASTA file containing proteic sequences\n");
+    printf("  -a NUCLEIC FILENAME   Execute assembly\n");
+    printf("  -c HEADER             Header or unique element of the header to identify the sequence to assemble\n\n\n");
 
     exit(EXIT_FAILURE);
 }
@@ -62,7 +64,7 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
         displayUsage();
     }
 
-    while ((opt = getopt(argc, argv, "hn:p:")) != -1)
+    while ((opt = getopt(argc, argv, "ha:c:n:p:")) != -1)
         switch (opt) {
         case 'h':
             displayUsage();
@@ -74,8 +76,15 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
             args->proteic = TRUE;
             args->protFile = strdup(optarg);
             break;
+        case 'a':
+            args->assembly = TRUE;
+            args->assembleFile = strdup(optarg);
+            break;
+        case 'c':
+            args->seqChoice = strdup(optarg);
+            break;
         default:
-            abort();
+            displayUsage();
         }
 
     for (i = optind; i < argc; i++) {
@@ -92,10 +101,16 @@ FILE *openFile(Options *args) {
             err(EXIT_FAILURE, "Erreur fopen: %s:", args->nuclFile);
         }
         return fd;
-    } else {
+    } else if (args->protFile) {
         fd = fopen(args->protFile, "r");
         if (fd == NULL) {
             err(EXIT_FAILURE, "Erreur fopen: %s:", args->protFile);
+        }
+        return fd;
+    } else {
+        fd = fopen(args->assembleFile, "r");
+        if (fd == NULL) {
+            err(EXIT_FAILURE, "Erreur fopen: %s:", args->assembleFile);
         }
         return fd;
     }
@@ -109,6 +124,8 @@ void freeMenu(Menu *m) {
 void freeOpt(Options *args) {
     free(args->nuclFile);
     free(args->protFile);
+    free(args->assembleFile);
+    free(args->seqChoice);
     free(args);
 }
 
