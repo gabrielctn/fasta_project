@@ -4,6 +4,7 @@
 Nucleic_Dict *tabNd;
 int indexTabNd = 0;
 
+// Détermine si le nucléotide actuel de la séquence analysée est correct ou non
 int dicoNucleicIndex(char nucleotide) {
     switch (nucleotide) {
     case 'A':
@@ -39,6 +40,8 @@ void insertDictionary(Nucleic_Dict *nd, char *sequence) {
     }
 }
 
+/* Parcours le dictionnaire récursivement pour voir
+ * si la séquence recherchée s'y trouve */
 int searchSeqDictionary(Nucleic_Dict *nd, char *sequence) {
     if (nd == NULL) {
         return 0;
@@ -49,6 +52,7 @@ int searchSeqDictionary(Nucleic_Dict *nd, char *sequence) {
     return searchSeqDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence + 1);
 }
 
+// Recherche le nombre de séquence qui ont le même préfixe demandé
 int searchNbPrefixDictionary(Nucleic_Dict *nd, char *sequence) {
     if (nd == NULL) {
         return 0;
@@ -59,11 +63,12 @@ int searchNbPrefixDictionary(Nucleic_Dict *nd, char *sequence) {
     return searchNbPrefixDictionary(nd->child[dicoNucleicIndex(sequence[0])], sequence + 1);
 }
 
+/* Initialise le dictionnaire: enregistre tous les nucléotides de
+ * toutes les séquences du fichier fasta */
 void initNucleicDictionary(Nucleic_Dict *nd, Sequences *s) {
     if (s->next == NULL) {
         return;
-    } else {
-        insertDictionary(nd, s->sequence);
     }
+    insertDictionary(nd, s->sequence);
     initNucleicDictionary(nd, s->next);
 }
