@@ -230,7 +230,8 @@ Sequences *searchSequenceToAssemble(char *seqChoice, Sequences *seq) {
 }
 
 void freeReads(Read *totalReads) {
-    for (int i = 0; i < nbReads; i++) {
+    int i;
+    for (i = 0; i < nbReads; i++) {
         free(totalReads[i].read);
     }
     free(totalReads);
