@@ -1,5 +1,5 @@
-#include "headers/search.h"
-#include "headers/global.h"
+#include "../headers/search.h"
+#include "../headers/global.h"
 
 int searchByGeneName(Sequences *s, char *geneName, int occ) {
     int i = 0, nbFound = 0;

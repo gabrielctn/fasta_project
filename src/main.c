@@ -1,9 +1,9 @@
-#include "headers/global.h"
-#include "headers/search.h"
-#include "headers/start.h"
-#include "headers/dictionary.h"
-#include "headers/translate.h"
-#include "headers/assembly.h"
+#include "../headers/global.h"
+#include "../headers/search.h"
+#include "../headers/start.h"
+#include "../headers/dictionary.h"
+#include "../headers/translate.h"
+#include "../headers/assembly.h"
 
 #define DEBUG 0
 #define CLEARSCR() printf("\033[H\033[2J");

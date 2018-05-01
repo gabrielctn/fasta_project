@@ -1,5 +1,5 @@
-#include "headers/sequences.h"
-#include "headers/global.h"
+#include "../headers/sequences.h"
+#include "../headers/global.h"
 
 #define DEBUG_SEQUENCES 0 // Si vaut 1, la sortie peut être longue car affiche toutes les séquences fasta
 

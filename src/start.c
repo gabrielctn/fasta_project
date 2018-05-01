@@ -1,6 +1,6 @@
-#include "headers/global.h"
-#include "headers/sequences.h"
-#include "headers/start.h"
+#include "../headers/global.h"
+#include "../headers/sequences.h"
+#include "../headers/start.h"
 
 #define CANONICAL 0
 #define NON_CANONICAL 1
@@ -68,6 +68,7 @@ void parseCommandLine(int argc, char *argv[], Options *args) {
         switch (opt) {
         case 'h':
             displayUsage();
+            break;
         case 'n':
             args->nucleic = TRUE;
             args->nuclFile = strdup(optarg);

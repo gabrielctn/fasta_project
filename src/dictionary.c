@@ -1,5 +1,5 @@
-#include "headers/dictionary.h"
-#include "headers/global.h"
+#include "../headers/dictionary.h"
+#include "../headers/global.h"
 
 Nucleic_Dict *tabNd;
 int indexTabNd = 0;

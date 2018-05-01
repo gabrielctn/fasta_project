@@ -1,6 +1,6 @@
-#include "headers/global.h"
-#include "headers/sequences.h"
-#include "headers/assembly.h"
+#include "../headers/global.h"
+#include "../headers/sequences.h"
+#include "../headers/assembly.h"
 
 #define NB_NUCL 5 // nombre moyen d'apparition de chaque base
 #define READ_LENGTH 500000
