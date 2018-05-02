@@ -1,0 +1,23 @@
+name: fasta-project
+version: "0.1"
+summary: Nucleic and protein sequences manipulation in C
+description: |
+        This project is about working on protein and nucleic sequences,
+        stored in FASTA formatted files, in order to make specific searches (by gene name, sequence,
+        position in the genome and sub-string), translations and later calculate distances or make sequencing simulations.
+
+confinement: devmode
+
+apps:
+  fasta-project:
+    command: fasta_project
+
+parts:
+  fasta-project:
+    plugin: make
+    source-type: git
+    source: https://github.com/gabrielctn/fasta_project.git
+    artifacts: [.]
+    build-packages:
+      - gcc
+      - make
