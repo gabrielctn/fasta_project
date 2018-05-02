@@ -1,10 +1,10 @@
 .PHONY: clean wipeout
 
-EXEC = projet_fasta
+EXEC = fasta_project
 C_FLAGS = -Wall -Wextra -g
 CC = gcc $(C_FLAGS)
 
-SRC = $(wildcard *.c)
+SRC = $(wildcard src/*.c)
 OBJ = ${SRC:.c=.o}
 
 all: $(EXEC)

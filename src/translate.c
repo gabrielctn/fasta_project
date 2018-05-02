@@ -1,5 +1,5 @@
-#include "headers/translate.h"
-#include "headers/global.h"
+#include "../headers/translate.h"
+#include "../headers/global.h"
 
 /* Initialize la structure du code génétique à partir du fichier
  * contenant le code génétique */

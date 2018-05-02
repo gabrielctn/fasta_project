@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/gabrielctn/fasta_project.svg?branch=master)](https://travis-ci.org/gabrielctn/fasta_project)
+
 # C Project: FASTA sequences manipulation
 
 This project is about working on protein and nucleic sequences, stored in FASTA formatted files, in order to make specific searches (by gene name, sequence, position in the genome and sub-string), translations and later calculate distances or make sequencing simulations.
@@ -50,7 +52,6 @@ You can set different parameters to change the assembly precision and number of 
 `NB_NUCL` : average time of apparition of each base.
 `READ_LENGTH` : size of each read created *de novo*.
 `READ_OVERLAP_LENGTH`: length of the accepted overlap between two reads.
-
 
 ## Debug
 
