@@ -14,7 +14,7 @@ apps:
 
 parts:
   fasta-project:
-    plugin: autotools
+    plugin: make
     source-type: git
     source: https://github.com/gabrielctn/fasta_project.git
     artifacts: [.]
